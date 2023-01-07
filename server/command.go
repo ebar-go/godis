@@ -40,7 +40,7 @@ func (store *Store) Set(key string, value string) {
 
 func (store *Store) Get(key string) *Object {
 	index := HashIndex(key)
-	entry := store.dict.ht[0].table[index&store.dict.ht[0].mask]
+	entry := store.dict.HashTable().Get(index)
 	if entry == nil {
 		return nil
 	}
@@ -67,6 +67,35 @@ func (store *Store) Len(key string) uint64 {
 	}
 
 	return obj.Len()
+
+}
+
+func (store *Store) Del(key string) {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+	if entry == nil {
+		return
+	}
+
+	if entry.Key.String() == key {
+		store.dict.HashTable().Set(index, entry.Next)
+		store.dict.HashTable().used--
+		return
+	}
+
+	for {
+		if entry.Next == nil {
+			return
+		}
+
+		if entry.Next.Key.String() == key {
+			entry.Next = entry.Next.Next
+			store.dict.HashTable().used--
+			return
+		}
+
+		entry = entry.Next
+	}
 
 }
 

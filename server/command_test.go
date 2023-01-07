@@ -24,3 +24,12 @@ func TestLen(t *testing.T) {
 	store.Set("foo", "bar")
 	assert.Equal(t, uint64(3), store.Len("foo"))
 }
+
+func TestDel(t *testing.T) {
+	store := NewStore()
+	store.Set("foo", "bar")
+	assert.Equal(t, uint64(3), store.Len("foo"))
+
+	store.Del("foo")
+	assert.Nil(t, store.Get("foo"))
+}
