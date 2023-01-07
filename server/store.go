@@ -21,6 +21,31 @@ func (dict *Dict) HashTable() *DictHT {
 	return dict.ht[0]
 }
 
+func (dict *Dict) SetEntry(index uint64, item *DictEntry) {
+	ht := dict.HashTable()
+	entry := ht.Get(index)
+	if entry == nil {
+		ht.Set(index, item)
+		return
+	}
+
+	for {
+		if entry.Key.String() == item.Key.String() {
+			entry.Val = item.Val
+			return
+		}
+
+		if entry.Next == nil {
+			break
+		}
+
+		entry = entry.Next
+	}
+
+	entry.Next = item
+	ht.used++
+}
+
 func NewDict() *Dict {
 	return &Dict{ht: [2]*DictHT{
 		{
@@ -45,12 +70,17 @@ const (
 type ObjectEncoding uint
 
 const (
-	EncodingSDS = iota
-	EncodingQuickList
-	EncodingListPack
-	EncodingHashTable
+	EncodingRaw = iota
+	EncodingInt
+	EncodingHT
+	EncodingZipMap
+	EncodingLinkedList
+	EncodingZipList
 	EncodingIntSet
 	EncodingSkipList
+	EncodingEMBStr
+	EncodingQuickList
+	EncodingListPack
 )
 
 type Object struct {
@@ -63,7 +93,7 @@ func (obj Object) Len() uint64 {
 	switch obj.Type {
 	case ObjectString:
 		sds := (*types.SDS)(obj.Ptr)
-		return uint64(sds.Len())
+		return sds.Len()
 	}
 
 	return 0
@@ -79,11 +109,11 @@ func (obj Object) String() string {
 	return ""
 }
 
-func NewStringObject(str string) *Object {
+func NewStringObject(buf []byte) *Object {
 	return &Object{
 		Type:     ObjectString,
-		Encoding: EncodingSDS,
-		Ptr:      unsafe.Pointer(types.NewSDS(str)),
+		Encoding: EncodingRaw,
+		Ptr:      unsafe.Pointer(types.NewSDS(buf)),
 	}
 }
 
