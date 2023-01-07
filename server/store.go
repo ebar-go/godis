@@ -59,6 +59,16 @@ type Object struct {
 	Ptr      unsafe.Pointer // 指向底层数据结构的指针
 }
 
+func (obj Object) Len() uint64 {
+	switch obj.Type {
+	case ObjectString:
+		sds := (*types.SDS)(obj.Ptr)
+		return uint64(sds.Len())
+	}
+
+	return 0
+}
+
 func (obj Object) String() string {
 	switch obj.Type {
 	case ObjectString:

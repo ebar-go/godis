@@ -60,6 +60,16 @@ func (store *Store) Get(key string) *Object {
 	return nil
 }
 
+func (store *Store) Len(key string) uint64 {
+	obj := store.Get(key)
+	if obj == nil {
+		return 0
+	}
+
+	return obj.Len()
+
+}
+
 func HashIndex(key any) uint64 {
 	table := crc64.MakeTable(crc64.ECMA)
 	bytesBuffer := bytes.NewBuffer([]byte{})
