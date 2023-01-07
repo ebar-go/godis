@@ -4,19 +4,12 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	"github.com/ebar-go/godis/pkg/convert"
 	"hash/crc64"
 )
 
 func (store *Store) Set(key string, value any) {
-
 	index := HashIndex(key)
-
-	item := &DictEntry{
-		Key: NewStringObject([]byte(key)),
-		Val: NewStringObject(convert.ToByte(value)),
-	}
-	store.dict.SetEntry(index, item)
+	store.dict.SetEntry(index, key, value)
 }
 
 func (store *Store) Get(key string) *Object {

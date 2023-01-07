@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/ebar-go/godis/pkg/convert"
 	"github.com/ebar-go/godis/server/types"
 	"unsafe"
 )
@@ -21,17 +22,21 @@ func (dict *Dict) HashTable() *DictHT {
 	return dict.ht[0]
 }
 
-func (dict *Dict) SetEntry(index uint64, item *DictEntry) {
+func (dict *Dict) SetEntry(index uint64, key string, value any) {
 	ht := dict.HashTable()
 	entry := ht.Get(index)
 	if entry == nil {
-		ht.Set(index, item)
+		ht.Set(index, &DictEntry{
+			Key: NewStringObject([]byte(key)),
+			Val: NewStringObject(convert.ToByte(value)),
+		})
 		return
 	}
 
+	// 通过链表寻址解决hash冲突
 	for {
-		if entry.Key.String() == item.Key.String() {
-			entry.Val = item.Val
+		if entry.Key.String() == key {
+			entry.Val.SetValue(convert.ToByte(value))
 			return
 		}
 
@@ -42,7 +47,10 @@ func (dict *Dict) SetEntry(index uint64, item *DictEntry) {
 		entry = entry.Next
 	}
 
-	entry.Next = item
+	entry.Next = &DictEntry{
+		Key: NewStringObject([]byte(key)),
+		Val: NewStringObject(convert.ToByte(value)),
+	}
 	ht.used++
 }
 
@@ -97,6 +105,16 @@ func (obj Object) Len() uint64 {
 	}
 
 	return 0
+}
+
+func (obj *Object) SetValue(val []byte) {
+	switch obj.Type {
+	case ObjectString:
+		sds := (*types.SDS)(obj.Ptr)
+		sds.Set(val)
+
+	}
+
 }
 
 func (obj Object) String() string {

@@ -16,7 +16,7 @@ type SDS struct {
 // NewSDS creates a new SDS object
 func NewSDS(buf []byte) *SDS {
 	s := &SDS{}
-	s.Update(buf)
+	s.Set(buf)
 	return s
 }
 
@@ -27,7 +27,7 @@ func (s *SDS) Len() uint64 { return s.len }
 func (s *SDS) avail() uint64 { return s.alloc - s.len }
 
 // Update updates the SDS object value
-func (s *SDS) Update(b []byte) {
+func (s *SDS) Set(b []byte) {
 	sl := uint64(len(b))
 	if sl == 0 { // 代表传入的是空字符串
 		s.len = 0
