@@ -25,7 +25,7 @@ func TestSet(t *testing.T) {
 	})
 
 	t.Run("setInteger", func(t *testing.T) {
-		store.Set("age", int(1))
+		store.Set("age", 1)
 		age := store.Get("age")
 		assert.Equal(t, "1", age.String())
 	})
