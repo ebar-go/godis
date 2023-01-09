@@ -21,8 +21,6 @@ type QuickListNode struct {
 	encoding   uint   // 表示zipList是否被压缩
 }
 
-type ZipList struct{}
-
 func (ql *QuickList) PushHead() {
 
 }
