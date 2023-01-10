@@ -8,6 +8,17 @@ type QuickList struct {
 	compress   uint16 //节点压缩深度
 }
 
+func NewQuickList() *QuickList {
+	head, tail := NewQuickListNode(), NewQuickListNode()
+	head.next = tail
+	tail.prev = head
+	return &QuickList{
+		head: head,
+		tail: tail,
+		len:  2,
+	}
+}
+
 const (
 	QuickListNodeEncodingRaw = 1 // 没有被压缩
 	QuickListNodeEncodingLZF = 2 // 已经被LZF算法压缩
@@ -21,13 +32,88 @@ type QuickListNode struct {
 	encoding   uint   // 表示zipList是否被压缩
 }
 
-func (ql *QuickList) PushHead() {
-
+func NewQuickListNode() *QuickListNode {
+	return &QuickListNode{
+		zl: NewZipList(8),
+	}
 }
 
-func (ql *QuickList) PushTail()                 {}
+func (ql *QuickList) PushHead(value any) {
+	entry := NewEntry(value)
+	ql.fill++
+	if ql.head.zl.Full() {
+		node := NewQuickListNode()
+		node.next = ql.head
+		node.zl.Insert(entry)
+		ql.head = node
+		ql.len++
+		return
+	}
+
+	ql.head.zl.Insert(entry)
+}
+
+func (ql *QuickList) PushTail(value any) {
+	entry := NewEntry(value)
+	ql.fill++
+	if ql.tail.zl.Full() {
+		node := NewQuickListNode()
+		node.prev = ql.tail
+		node.zl.Insert(entry)
+		ql.tail = node
+		ql.len++
+		return
+	}
+
+	ql.tail.zl.Insert(entry)
+}
 func (ql *QuickList) InsertAfter()              {}
 func (ql *QuickList) InsertBefore()             {}
 func (ql *QuickList) ReplaceAtIndex(index uint) {}
 func (ql *QuickList) DelEntry()                 {}
 func (ql *QuickList) DelRange()                 {}
+
+func (ql *QuickList) LRange(start, end uint16) []*Entry {
+	if start > ql.fill {
+		return nil
+	}
+	if end > ql.fill {
+		end = ql.fill
+	}
+	index := start
+	node := ql.head
+	n := end - start
+	result := make([]*Entry, 0, n)
+	// 找到应该从哪个node开始遍历
+	for {
+		if node == nil {
+			return nil
+		}
+		zipListLen := uint16(node.zl.len)
+		if index < zipListLen {
+			break
+		}
+		index -= zipListLen
+		node = node.next
+	}
+
+	for {
+		if n == 0 {
+			break
+		}
+
+		zipListLen := uint16(node.zl.len)
+		if n <= zipListLen-index {
+			result = append(result, node.zl.entries[index:index+n]...)
+			break
+		}
+
+		result = append(result, node.zl.entries[index:]...)
+		n -= zipListLen - index
+		node = node.next
+		index = 0
+
+	}
+
+	return result
+}
