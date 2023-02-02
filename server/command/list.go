@@ -6,5 +6,5 @@ type List interface {
 	LPop(key string) (string, error)
 	RPop(key string) (string, error)
 	LRange(key string, start, stop int64) ([]string, error)
-	Len(key string) int
+	Len(key string) int64
 }
