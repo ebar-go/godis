@@ -1,4 +1,4 @@
-package command
+package godis
 
 type Set interface {
 	SAdd(key string, member string) error

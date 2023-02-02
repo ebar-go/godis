@@ -1,4 +1,4 @@
-package command
+package godis
 
 type List interface {
 	LPush(key string, value ...string) error

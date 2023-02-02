@@ -1,4 +1,4 @@
-package server
+package internal
 
 const (
 	defaultMask = 1 << 5

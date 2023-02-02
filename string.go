@@ -1,4 +1,4 @@
-package command
+package godis
 
 type String interface {
 	Set(key string, value any) error

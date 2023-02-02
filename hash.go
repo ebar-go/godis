@@ -1,4 +1,4 @@
-package command
+package godis
 
 type Hash interface {
 	HSet(key string, filed string, value any) error
