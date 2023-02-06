@@ -1,2 +1,2 @@
 # godis
-implement redis  by golang
+implement redis+etcd  by golang
