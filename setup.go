@@ -8,13 +8,16 @@ import (
 
 type Server struct {
 	key Key
+
+	str String
 }
 
-func NewServer() *Server {
-	storage := store.NewStore()
-	return &Server{
-		key: command.NewKey(storage),
-	}
+func (s *Server) Set(key string, value any) error {
+	return s.str.Set(key, value)
+}
+
+func (s *Server) Get(key string) (value string, err error) {
+	return s.str.Get(key)
 }
 
 func (s *Server) Del(key string) uint {
@@ -31,4 +34,12 @@ func (s *Server) Expire(key string, ttl time.Duration) error {
 
 func (s *Server) TTL(key string) (time.Duration, error) {
 	return s.key.TTL(key)
+}
+
+func NewServer() *Server {
+	storage := store.NewStore()
+	return &Server{
+		key: command.NewKey(storage),
+		str: command.NewString(storage),
+	}
 }

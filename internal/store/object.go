@@ -1,8 +1,8 @@
 package store
 
 import (
+	"github.com/ebar-go/godis/internal/types"
 	"github.com/ebar-go/godis/pkg/convert"
-	"github.com/ebar-go/godis/server/types"
 	"strconv"
 	"unsafe"
 )
