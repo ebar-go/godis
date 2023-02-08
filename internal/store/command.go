@@ -1,4 +1,4 @@
-package internal
+package store
 
 import (
 	"bytes"
@@ -44,17 +44,17 @@ func (store *Store) Len(key string) uint64 {
 
 }
 
-func (store *Store) Del(key string) {
+func (store *Store) Del(key string) (n uint) {
 	index := HashIndex(key)
 	entry := store.dict.HashTable().Get(index)
 	if entry == nil {
-		return
+		return 0
 	}
 
 	if entry.Key.String() == key {
 		store.dict.HashTable().Set(index, entry.Next)
 		store.dict.HashTable().used--
-		return
+		return 1
 	}
 
 	for {
@@ -65,7 +65,7 @@ func (store *Store) Del(key string) {
 		if entry.Next.Key.String() == key {
 			entry.Next = entry.Next.Next
 			store.dict.HashTable().used--
-			return
+			return 1
 		}
 
 		entry = entry.Next

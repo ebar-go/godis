@@ -1,4 +1,4 @@
-package internal
+package store
 
 type Store struct {
 	dict *Dict

@@ -1,4 +1,4 @@
-package internal
+package store
 
 const (
 	defaultMask = 1 << 5

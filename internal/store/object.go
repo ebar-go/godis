@@ -1,4 +1,4 @@
-package internal
+package store
 
 import (
 	"github.com/ebar-go/godis/pkg/convert"

@@ -3,7 +3,7 @@ package godis
 import "time"
 
 type Key interface {
-	Del(key string) error
+	Del(key string) uint
 	Expire(key string, ttl time.Duration) error
 	Exists(key string) (bool, error)
 }
