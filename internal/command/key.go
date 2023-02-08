@@ -24,6 +24,11 @@ func (cmd KeyCommand) Expire(key string, ttl time.Duration) error {
 	panic("implement me")
 }
 
+func (cmd KeyCommand) TTL(key string) (time.Duration, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (cmd KeyCommand) Exists(key string) (bool, error) {
 	val := cmd.storage.Get(key)
 	if val == nil {
