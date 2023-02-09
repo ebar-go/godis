@@ -61,32 +61,34 @@ func (store *Store) Len(key string) uint64 {
 
 }
 
-func (store *Store) Del(key string) (n uint) {
+func (store *Store) Del(key string) bool {
 	index := HashIndex(key)
 	entry := store.dict.HashTable().Get(index)
 	if entry == nil {
-		return 0
+		return false
 	}
 
 	if entry.Key.String() == key {
 		store.dict.HashTable().Set(index, entry.Next)
 		store.dict.HashTable().used--
-		return 1
+		return true
 	}
 
 	for {
 		if entry.Next == nil {
-			return
+			break
 		}
 
 		if entry.Next.Key.String() == key {
 			entry.Next = entry.Next.Next
 			store.dict.HashTable().used--
-			return 1
+			return true
 		}
 
 		entry = entry.Next
 	}
+
+	return false
 
 }
 

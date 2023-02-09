@@ -14,8 +14,13 @@ func NewKey(storage *store.Store) *KeyCommand {
 	return &KeyCommand{storage: storage}
 }
 
-func (cmd KeyCommand) Del(key string) (n uint) {
-	return cmd.storage.Del(key)
+func (cmd KeyCommand) Del(key ...string) (n uint) {
+	for _, item := range key {
+		if cmd.storage.Del(item) {
+			n++
+		}
+	}
+	return
 
 }
 

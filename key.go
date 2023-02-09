@@ -2,7 +2,7 @@ package godis
 
 type Key interface {
 	// Del deletes some keys
-	Del(key string) uint
+	Del(key ...string) uint
 
 	// Expire set expiration for the given key
 	Expire(key string, ttl int64) error

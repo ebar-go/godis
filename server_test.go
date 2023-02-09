@@ -27,4 +27,7 @@ func TestNewServer(t *testing.T) {
 
 	time.Sleep(time.Second * 10)
 	assert.Equal(t, constant.ExpireResultOfExpired, srv.TTL(key))
+
+	assert.Equal(t, uint(1), srv.Del(key))
+	assert.False(t, srv.Exists(key))
 }
