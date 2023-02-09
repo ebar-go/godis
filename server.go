@@ -1,20 +1,15 @@
 package godis
 
 import (
-	"github.com/ebar-go/godis/internal/command"
 	"github.com/ebar-go/godis/internal/store"
 )
 
 type Server struct {
-	Key
-
-	String
+	Command
 }
 
 func NewServer() *Server {
-	storage := store.NewStore()
 	return &Server{
-		Key:    command.NewKey(storage),
-		String: command.NewString(storage),
+		Command: NewCommand(store.NewStore()),
 	}
 }
