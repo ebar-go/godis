@@ -1,6 +1,7 @@
 package convert
 
 import (
+	"encoding/binary"
 	"reflect"
 	"unsafe"
 )
@@ -21,6 +22,10 @@ func ToByte(val any) []byte {
 		return val.([]byte)
 	case string:
 		return String2Byte(val.(string))
+	case int64:
+		var buf = make([]byte, 8)
+		binary.BigEndian.PutUint64(buf, uint64(val.(int64)))
+		return buf
 	}
 
 	return nil

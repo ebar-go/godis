@@ -7,6 +7,26 @@ import (
 	"hash/crc64"
 )
 
+func HashIndex(key any) uint64 {
+	table := crc64.MakeTable(crc64.ECMA)
+	bytesBuffer := bytes.NewBuffer([]byte{})
+	switch key.(type) {
+	case string:
+		str := key.(string)
+		err := binary.Write(bytesBuffer, binary.BigEndian, []byte(str))
+		if err != nil {
+			panic("invalid key")
+		}
+	default:
+		err := binary.Write(bytesBuffer, binary.BigEndian, []byte(fmt.Sprintf("%v", key)))
+		if err != nil {
+			panic("invalid key")
+		}
+	}
+
+	return crc64.Checksum(bytesBuffer.Bytes(), table)
+}
+
 func (store *Store) Set(key string, value any) {
 	index := HashIndex(key)
 	store.dict.SetEntry(index, key, value)
@@ -15,7 +35,7 @@ func (store *Store) Set(key string, value any) {
 func (store *Store) Get(key string) *Object {
 	index := HashIndex(key)
 	entry := store.dict.HashTable().Get(index)
-	
+
 	for {
 		if entry == nil {
 			break
@@ -89,22 +109,13 @@ func (store *Store) Has(key string) bool {
 
 	return false
 }
-func HashIndex(key any) uint64 {
-	table := crc64.MakeTable(crc64.ECMA)
-	bytesBuffer := bytes.NewBuffer([]byte{})
-	switch key.(type) {
-	case string:
-		str := key.(string)
-		err := binary.Write(bytesBuffer, binary.BigEndian, []byte(str))
-		if err != nil {
-			panic("invalid key")
-		}
-	default:
-		err := binary.Write(bytesBuffer, binary.BigEndian, []byte(fmt.Sprintf("%v", key)))
-		if err != nil {
-			panic("invalid key")
-		}
-	}
 
-	return crc64.Checksum(bytesBuffer.Bytes(), table)
+func (store *Store) SetExpire(key string, ttl int64) {
+	index := HashIndex(key)
+	store.dict.SetExpire(index, key, ttl)
+}
+
+func (store *Store) GetExpire(key string) int64 {
+	index := HashIndex(key)
+	return store.dict.GetExpire(index, key)
 }

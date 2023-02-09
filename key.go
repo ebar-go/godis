@@ -1,10 +1,15 @@
 package godis
 
-import "time"
-
 type Key interface {
+	// Del deletes some keys
 	Del(key string) uint
-	Expire(key string, ttl time.Duration) error
-	TTL(key string) (time.Duration, error)
+
+	// Expire set expiration for the given key
+	Expire(key string, ttl int64) error
+
+	// TTL returns the expiration time of the given key
+	TTL(key string) int64
+
+	// Exists returns true if the given key exists
 	Exists(key string) bool
 }

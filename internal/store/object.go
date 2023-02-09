@@ -53,20 +53,20 @@ func (obj *Object) SetStringValue(val any) {
 	// 如果是字符串
 	if obj.Encoding == EncodingRaw {
 		switch val.(type) {
-		case string:
-			sds := (*types.SDS)(obj.Ptr)
-			sds.Set(convert.ToByte(val))
 		case int:
 			obj.Encoding = EncodingInt
 			obj.Ptr = unsafe.Pointer(&val)
+		default:
+			sds := (*types.SDS)(obj.Ptr)
+			sds.Set(convert.ToByte(val))
 		}
 	} else if obj.Encoding == EncodingInt { // 如果是数字
 		switch val.(type) {
-		case string:
-			obj.Encoding = EncodingRaw // 切换编码
-			obj.Ptr = unsafe.Pointer(types.NewSDS(convert.String2Byte(val.(string))))
 		case int:
 			obj.Ptr = unsafe.Pointer(&val)
+		default:
+			obj.Encoding = EncodingRaw // 切换编码
+			obj.Ptr = unsafe.Pointer(types.NewSDS(convert.String2Byte(val.(string))))
 		}
 	}
 
@@ -93,23 +93,21 @@ func NewKeyObject(key string) *Object {
 
 func NewStringObject(val any) *Object {
 	switch val.(type) {
-	case string:
-		return NewStringObjectWithEncoding(val, EncodingRaw)
 	case int:
 		return NewStringObjectWithEncoding(val, EncodingInt)
 	}
 
-	return nil
+	return NewStringObjectWithEncoding(val, EncodingRaw)
 }
 
 func NewStringObjectWithEncoding(val any, encoding ObjectEncoding) *Object {
 	obj := &Object{Type: ObjectString, Encoding: encoding}
 	switch encoding {
-	case EncodingRaw:
-		obj.Ptr = unsafe.Pointer(types.NewSDS(convert.ToByte(val)))
 	case EncodingInt:
 		n, _ := val.(int)
 		obj.Ptr = unsafe.Pointer(&n)
+	default:
+		obj.Ptr = unsafe.Pointer(types.NewSDS(convert.ToByte(val)))
 	}
 	return obj
 }
