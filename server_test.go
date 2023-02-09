@@ -14,4 +14,6 @@ func TestNewServer(t *testing.T) {
 
 	res, err := srv.Get("foo")
 	assert.Equal(t, "bar", res)
+
+	assert.True(t, srv.Exists("foo"))
 }

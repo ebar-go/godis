@@ -1,7 +1,6 @@
 package command
 
 import (
-	"github.com/ebar-go/godis/errors"
 	"github.com/ebar-go/godis/internal/store"
 	"time"
 )
@@ -29,11 +28,7 @@ func (cmd KeyCommand) TTL(key string) (time.Duration, error) {
 	panic("implement me")
 }
 
-func (cmd KeyCommand) Exists(key string) (bool, error) {
-	val := cmd.storage.Get(key)
-	if val == nil {
-		return false, errors.Nil
-	}
-
-	return true, nil
+func (cmd KeyCommand) Exists(key string) bool {
+	exist := cmd.storage.Has(key)
+	return exist
 }

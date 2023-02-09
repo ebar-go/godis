@@ -15,10 +15,7 @@ func (store *Store) Set(key string, value any) {
 func (store *Store) Get(key string) *Object {
 	index := HashIndex(key)
 	entry := store.dict.HashTable().Get(index)
-	if entry == nil {
-		return nil
-	}
-
+	
 	for {
 		if entry == nil {
 			break
@@ -73,6 +70,25 @@ func (store *Store) Del(key string) (n uint) {
 
 }
 
+func (store *Store) Has(key string) bool {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return true
+		}
+
+		entry = entry.Next
+
+	}
+
+	return false
+}
 func HashIndex(key any) uint64 {
 	table := crc64.MakeTable(crc64.ECMA)
 	bytesBuffer := bytes.NewBuffer([]byte{})

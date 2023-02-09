@@ -24,7 +24,7 @@ func (s *Server) Del(key string) uint {
 	return s.key.Del(key)
 }
 
-func (s *Server) Exists(key string) (bool, error) {
+func (s *Server) Exists(key string) bool {
 	return s.key.Exists(key)
 }
 
