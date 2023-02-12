@@ -13,6 +13,10 @@ type Command interface {
 type CommandGroup struct {
 	Key
 	String
+	List
+	Hash
+	Set
+	SortedSet
 }
 
 func NewCommand(storage *store.Store) *CommandGroup {
