@@ -129,3 +129,12 @@ func (obj *Object) SetHashField(field string, value any) error {
 
 	return nil
 }
+
+func (obj *Object) GetHashField(field string) any {
+	if obj.Type != ObjectHash {
+		return nil
+	}
+
+	table := (*types.HashTable)(obj.Ptr)
+	return table.Get(field)
+}

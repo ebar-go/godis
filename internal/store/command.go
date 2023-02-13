@@ -127,3 +127,8 @@ func (store *Store) HSet(key string, field string, value any) error {
 
 	return store.dict.SetHash(index, key, field, value)
 }
+
+func (store *Store) HGet(key string, field string) any {
+	index := HashIndex(key)
+	return store.dict.HGet(index, key, field)
+}

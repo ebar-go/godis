@@ -45,6 +45,26 @@ func (dict *Dict) SetHash(index uint64, key string, field string, value any) err
 	return nil
 }
 
+func (dict *Dict) HGet(index uint64, key string, field string) (any) {
+	ht := dict.HashTable()
+	entry := ht.Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.GetHashField(field)
+		}
+
+		entry = entry.Next
+	}
+
+	return nil
+
+}
+
 func (dict *Dict) ExpireTable() *DictHT {
 	return dict.ht[1]
 }

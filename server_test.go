@@ -35,5 +35,12 @@ func TestNewServer(t *testing.T) {
 func TestServer_HSet(t *testing.T) {
 	srv := NewServer()
 	assert.Nil(t, srv.HSet("someHash", "foo", "bar"))
-	assert.Nil(t, srv.HSet("someHash", "foo", 1))
+	assert.Nil(t, srv.HSet("someHash", "age", 1))
+
+	stringVal, _ := srv.HGet("someHash", "foo")
+	assert.Equal(t, "bar", stringVal)
+
+	intVal, _ := srv.HGet("someHash", "age")
+	assert.Equal(t, 1, intVal)
+
 }

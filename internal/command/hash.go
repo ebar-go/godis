@@ -11,8 +11,8 @@ func (hash Hash) HSet(key string, filed string, value any) error {
 }
 
 func (hash Hash) HGet(key string, filed string) (value any, err error) {
-	//TODO implement me
-	panic("implement me")
+	value = hash.storage.HGet(key, filed)
+	return
 }
 
 func (hash Hash) HExists(key string, filed string) (bool, error) {
