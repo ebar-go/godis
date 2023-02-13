@@ -10,13 +10,9 @@ import (
 func TestNewServer(t *testing.T) {
 	srv := NewServer()
 	key := "foo"
-	err := srv.Set(key, "bar")
-	if err != nil {
-		t.Fatal(err)
-	}
+	srv.Set(key, "bar")
 
-	res, err := srv.Get(key)
-	assert.Equal(t, "bar", res)
+	assert.Equal(t, "bar", srv.Get(key))
 
 	assert.True(t, srv.Exists(key))
 

@@ -11,13 +11,18 @@ type Command interface {
 	Hash
 }
 
+var _ Command = &CommandGroup{}
+
 type CommandGroup struct {
 	Key
 	String
 	Hash
+	List
+	NormalSet
+	SortedSet
 }
 
-func NewCommand(storage *store.Store) Command {
+func NewCommand(storage *store.Store) *CommandGroup {
 	return &CommandGroup{
 		Key:    command.NewKey(storage),
 		String: command.NewString(storage),
@@ -40,8 +45,12 @@ type Key interface {
 }
 
 type String interface {
-	Set(key string, value any) error
-	Get(key string) (value string, err error)
+	// Set sets key to hold the string value.
+	// If key already holds a value, it is overwritten, regardless of its type
+	Set(key string, value any)
+
+	// Get the value of key. If the key does not exist the special value nil is returned
+	Get(key string) (value string)
 }
 
 type Hash interface {
@@ -52,4 +61,33 @@ type Hash interface {
 	HDel(key string, field ...string) error
 	HKeys(key string) ([]string, error)
 	HGetAll(key string) (map[string]any, error)
+}
+
+type NormalSet interface {
+	SAdd(key string, member string) error
+	SRem(key string, member string) error
+	SCard(key string) int64
+	SPop(key string) (string, error)
+	SIsMember(key string) (bool, error)
+	SMembers(key string) ([]string, error)
+}
+
+type SortedSet interface {
+	ZAdd(key string, member string, score float64) error
+	ZCard(key string) int64
+	ZCount(key string, min, max float64) int64
+	ZRange(key string, start, stop int64) ([]string, error)
+	ZRangeByScore(key string, min, max float64) ([]string, error)
+	ZRem(key string, member string) error
+	ZScore(key string, member string) (float64, error)
+	ZRank(key string, member string) (int64, error)
+}
+
+type List interface {
+	LPush(key string, value ...string) error
+	RPush(key string, value ...string) error
+	LPop(key string) (string, error)
+	RPop(key string) (string, error)
+	LRange(key string, start, stop int64) ([]string, error)
+	Len(key string) int64
 }

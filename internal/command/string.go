@@ -1,7 +1,6 @@
 package command
 
 import (
-	"github.com/ebar-go/godis/errors"
 	"github.com/ebar-go/godis/internal/store"
 )
 
@@ -9,16 +8,14 @@ type String struct {
 	storage *store.Store
 }
 
-func (s String) Set(key string, value any) error {
+func (s String) Set(key string, value any) {
 	s.storage.Set(key, value)
-	return nil
 }
 
-func (s String) Get(key string) (value string, err error) {
+func (s String) Get(key string) (value string) {
 	obj := s.storage.Get(key)
 	if obj == nil {
-		err = errors.Nil
-		return
+		return "Nil"
 	}
 
 	value = obj.String()
