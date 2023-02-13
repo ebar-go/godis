@@ -31,3 +31,9 @@ func TestNewServer(t *testing.T) {
 	assert.Equal(t, uint(1), srv.Del(key))
 	assert.False(t, srv.Exists(key))
 }
+
+func TestServer_HSet(t *testing.T) {
+	srv := NewServer()
+	assert.Nil(t, srv.HSet("someHash", "foo", "bar"))
+	assert.Nil(t, srv.HSet("someHash", "foo", 1))
+}

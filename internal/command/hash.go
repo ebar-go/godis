@@ -1,10 +1,13 @@
 package command
 
-type Hash struct{}
+import "github.com/ebar-go/godis/internal/store"
+
+type Hash struct {
+	storage *store.Store
+}
 
 func (hash Hash) HSet(key string, filed string, value any) error {
-	//TODO implement me
-	panic("implement me")
+	return hash.storage.HSet(key, filed, value)
 }
 
 func (hash Hash) HGet(key string, filed string) (value any, err error) {
@@ -35,4 +38,8 @@ func (hash Hash) HKeys(key string) ([]string, error) {
 func (hash Hash) HGetAll(key string) (map[string]any, error) {
 	//TODO implement me
 	panic("implement me")
+}
+
+func NewHash(storage *store.Store) *Hash {
+	return &Hash{storage: storage}
 }

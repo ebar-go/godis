@@ -1,6 +1,7 @@
 package store
 
 import (
+	"github.com/ebar-go/godis/errors"
 	"github.com/ebar-go/godis/internal/types"
 	"github.com/ebar-go/godis/pkg/convert"
 	"strconv"
@@ -110,4 +111,21 @@ func NewStringObjectWithEncoding(val any, encoding ObjectEncoding) *Object {
 		obj.Ptr = unsafe.Pointer(types.NewSDS(convert.ToByte(val)))
 	}
 	return obj
+}
+
+func NewHashObject() *Object {
+	obj := &Object{Type: ObjectHash, Encoding: EncodingHT, Ptr: unsafe.Pointer(types.NewHashTable())}
+
+	return obj
+}
+
+func (obj *Object) SetHashField(field string, value any) error {
+	if obj.Type != ObjectHash {
+		return errors.InvalidType
+	}
+
+	table := (*types.HashTable)(obj.Ptr)
+	table.Set(field, value)
+
+	return nil
 }

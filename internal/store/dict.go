@@ -18,6 +18,33 @@ func (dict *Dict) HashTable() *DictHT {
 	return dict.ht[0]
 }
 
+func (dict *Dict) SetHash(index uint64, key string, field string, value any) error {
+	ht := dict.HashTable()
+	entry := ht.Get(index)
+
+	for {
+		if entry == nil {
+			obj := NewHashObject()
+			_ = obj.SetHashField(field, value)
+			ht.Set(index, &DictEntry{
+				Key: NewKeyObject(key),
+				Val: obj,
+			})
+
+			ht.used++
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.SetHashField(field, value)
+		}
+
+		entry = entry.Next
+	}
+
+	return nil
+}
+
 func (dict *Dict) ExpireTable() *DictHT {
 	return dict.ht[1]
 }

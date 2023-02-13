@@ -8,21 +8,20 @@ import (
 type Command interface {
 	Key
 	String
+	Hash
 }
 
 type CommandGroup struct {
 	Key
 	String
-	List
 	Hash
-	Set
-	SortedSet
 }
 
-func NewCommand(storage *store.Store) *CommandGroup {
+func NewCommand(storage *store.Store) Command {
 	return &CommandGroup{
 		Key:    command.NewKey(storage),
 		String: command.NewString(storage),
+		Hash:   command.NewHash(storage),
 	}
 }
 
@@ -38,4 +37,19 @@ type Key interface {
 
 	// Exists returns true if the given key exists
 	Exists(key string) bool
+}
+
+type String interface {
+	Set(key string, value any) error
+	Get(key string) (value string, err error)
+}
+
+type Hash interface {
+	HSet(key string, filed string, value any) error
+	HGet(key string, filed string) (value any, err error)
+	HExists(key string, filed string) (bool, error)
+	HLen(key string) int64
+	HDel(key string, field ...string) error
+	HKeys(key string) ([]string, error)
+	HGetAll(key string) (map[string]any, error)
 }

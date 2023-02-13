@@ -121,3 +121,9 @@ func (store *Store) GetExpire(key string) int64 {
 	index := HashIndex(key)
 	return store.dict.GetExpire(index, key)
 }
+
+func (store *Store) HSet(key string, field string, value any) error {
+	index := HashIndex(key)
+
+	return store.dict.SetHash(index, key, field, value)
+}
