@@ -54,3 +54,13 @@ func TestHLen(t *testing.T) {
 	srv.HSet("someHash", "foo", "bar")
 	assert.Equal(t, int64(1), srv.HLen("someHash"))
 }
+
+func TestHDel(t *testing.T) {
+	srv := NewServer()
+	srv.HSet("someHash", "foo", "bar")
+
+	srv.HSet("someHash", "age", 1)
+	assert.Equal(t, 0, srv.HDel("someHash", "notExistField"))
+	assert.Equal(t, 2, srv.HDel("someHash", "foo", "age"))
+	assert.Equal(t, int64(0), srv.HLen("someHash"))
+}

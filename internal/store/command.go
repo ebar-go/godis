@@ -170,3 +170,22 @@ func (store *Store) HLen(key string) int64 {
 
 	return 0
 }
+
+func (store *Store) HDel(key string, fields ...string) int {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.HDel(fields...)
+		}
+
+		entry = entry.Next
+	}
+
+	return 0
+}

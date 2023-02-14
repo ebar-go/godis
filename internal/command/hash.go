@@ -23,9 +23,8 @@ func (hash Hash) HLen(key string) int64 {
 	return hash.storage.HLen(key)
 }
 
-func (hash Hash) HDel(key string, field ...string) error {
-	//TODO implement me
-	panic("implement me")
+func (hash Hash) HDel(key string, field ...string) int {
+	return hash.storage.HDel(key, field...)
 }
 
 func (hash Hash) HKeys(key string) ([]string, error) {

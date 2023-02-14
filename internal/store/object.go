@@ -157,3 +157,18 @@ func (obj *Object) HLen() int {
 	table := (*types.HashTable)(obj.Ptr)
 	return table.Len()
 }
+
+func (obj *Object) HDel(fields ...string) (count int) {
+	if obj.Type != ObjectHash {
+		return 0
+	}
+
+	table := (*types.HashTable)(obj.Ptr)
+	for _, field := range fields {
+		if table.Has(field) {
+			count++
+			table.Del(field)
+		}
+	}
+	return
+}

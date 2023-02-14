@@ -24,3 +24,7 @@ func (table *HashTable) Has(field string) bool {
 func (table *HashTable) Len() int {
 	return len(table.items)
 }
+
+func (table *HashTable) Del(field string) {
+	delete(table.items, field)
+}
