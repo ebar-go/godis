@@ -40,3 +40,11 @@ func TestServer_HSet(t *testing.T) {
 	assert.Equal(t, 1, intVal)
 
 }
+
+func TestHExists(t *testing.T) {
+	srv := NewServer()
+	srv.HSet("someHash", "foo", "bar")
+
+	assert.True(t, srv.HExists("someHash", "foo"))
+	assert.False(t, srv.HExists("someHash", "notExist"))
+}

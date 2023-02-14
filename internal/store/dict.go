@@ -45,7 +45,7 @@ func (dict *Dict) SetHash(index uint64, key string, field string, value any) err
 	return nil
 }
 
-func (dict *Dict) HGet(index uint64, key string, field string) (any) {
+func (dict *Dict) HGet(index uint64, key string, field string) any {
 	ht := dict.HashTable()
 	entry := ht.Get(index)
 

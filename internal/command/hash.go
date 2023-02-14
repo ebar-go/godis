@@ -15,9 +15,8 @@ func (hash Hash) HGet(key string, filed string) (value any, err error) {
 	return
 }
 
-func (hash Hash) HExists(key string, filed string) (bool, error) {
-	//TODO implement me
-	panic("implement me")
+func (hash Hash) HExists(key string, filed string) bool {
+	return hash.storage.HExists(key, filed)
 }
 
 func (hash Hash) HLen(key string) int64 {

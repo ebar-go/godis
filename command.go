@@ -54,9 +54,14 @@ type String interface {
 }
 
 type Hash interface {
+	// HSet sets the specified fields to their respective values in the hash stored at key.
 	HSet(key string, filed string, value any) error
+
+	// HGet Returns the value associated with field in the hash stored at key.
 	HGet(key string, filed string) (value any, err error)
-	HExists(key string, filed string) (bool, error)
+
+	// HExists returns if field is an existing field in the hash stored at key.
+	HExists(key string, filed string) bool
 	HLen(key string) int64
 	HDel(key string, field ...string) error
 	HKeys(key string) ([]string, error)

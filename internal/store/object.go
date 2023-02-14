@@ -138,3 +138,13 @@ func (obj *Object) GetHashField(field string) any {
 	table := (*types.HashTable)(obj.Ptr)
 	return table.Get(field)
 }
+
+func (obj *Object) HasHashField(field string) bool {
+	if obj.Type != ObjectHash {
+		return false
+	}
+
+	table := (*types.HashTable)(obj.Ptr)
+	return table.Has(field)
+
+}

@@ -132,3 +132,22 @@ func (store *Store) HGet(key string, field string) any {
 	index := HashIndex(key)
 	return store.dict.HGet(index, key, field)
 }
+
+func (store *Store) HExists(key string, field string) bool {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.HasHashField(field)
+		}
+
+		entry = entry.Next
+	}
+
+	return false
+}
