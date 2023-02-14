@@ -148,3 +148,12 @@ func (obj *Object) HasHashField(field string) bool {
 	return table.Has(field)
 
 }
+
+func (obj *Object) HLen() int {
+	if obj.Type != ObjectHash {
+		return 0
+	}
+
+	table := (*types.HashTable)(obj.Ptr)
+	return table.Len()
+}

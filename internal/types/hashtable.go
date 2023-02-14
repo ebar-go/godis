@@ -20,3 +20,7 @@ func (table *HashTable) Has(field string) bool {
 	_, ok := table.items[field]
 	return ok
 }
+
+func (table *HashTable) Len() int {
+	return len(table.items)
+}

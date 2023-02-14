@@ -151,3 +151,22 @@ func (store *Store) HExists(key string, field string) bool {
 
 	return false
 }
+
+func (store *Store) HLen(key string) int64 {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return int64(entry.Val.HLen())
+		}
+
+		entry = entry.Next
+	}
+
+	return 0
+}
