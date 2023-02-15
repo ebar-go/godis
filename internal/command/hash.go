@@ -31,9 +31,8 @@ func (hash Hash) HKeys(key string) []string {
 	return hash.storage.HKeys(key)
 }
 
-func (hash Hash) HGetAll(key string) (map[string]any, error) {
-	//TODO implement me
-	panic("implement me")
+func (hash Hash) HGetAll(key string) map[string]any {
+	return hash.storage.HGetAll(key)
 }
 
 func NewHash(storage *store.Store) *Hash {

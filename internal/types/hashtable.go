@@ -36,3 +36,7 @@ func (table *HashTable) Fields() []string {
 	}
 	return fields
 }
+
+func (table *HashTable) All() map[string]any {
+	return table.items
+}

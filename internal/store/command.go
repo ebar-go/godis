@@ -208,3 +208,21 @@ func (store *Store) HKeys(key string) []string {
 
 	return nil
 }
+func (store *Store) HGetAll(key string) map[string]any {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.HGetAll()
+		}
+
+		entry = entry.Next
+	}
+
+	return nil
+}

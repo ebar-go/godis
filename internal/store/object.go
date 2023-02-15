@@ -181,3 +181,11 @@ func (obj *Object) HKeys() []string {
 	table := (*types.HashTable)(obj.Ptr)
 	return table.Fields()
 }
+func (obj *Object) HGetAll() map[string]any {
+	if obj.Type != ObjectHash {
+		return nil
+	}
+
+	table := (*types.HashTable)(obj.Ptr)
+	return table.All()
+}

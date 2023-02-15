@@ -9,6 +9,9 @@ type Command interface {
 	Key
 	String
 	Hash
+	List
+	NormalSet
+	SortedSet
 }
 
 var _ Command = &CommandGroup{}
@@ -73,7 +76,9 @@ type Hash interface {
 
 	// HKeys Returns all field names in the hash stored at key.
 	HKeys(key string) []string
-	HGetAll(key string) (map[string]any, error)
+
+	// HGetAll Returns all fields and values of the hash stored at key. 
+	HGetAll(key string) map[string]any
 }
 
 type NormalSet interface {
