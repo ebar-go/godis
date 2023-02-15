@@ -64,3 +64,12 @@ func TestHDel(t *testing.T) {
 	assert.Equal(t, 2, srv.HDel("someHash", "foo", "age"))
 	assert.Equal(t, int64(0), srv.HLen("someHash"))
 }
+
+func TestHKeys(t *testing.T) {
+	srv := NewServer()
+	srv.HSet("someHash", "foo", "bar")
+
+	srv.HSet("someHash", "age", 1)
+	assert.NotEmpty(t, srv.HKeys("someHash"))
+	assert.Nil(t, srv.HKeys("notExistKey"))
+}

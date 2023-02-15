@@ -71,7 +71,8 @@ type Hash interface {
 	// If key does not exist, it is treated as an empty hash and this command returns 0.
 	HDel(key string, field ...string) int
 
-	HKeys(key string) ([]string, error)
+	// HKeys Returns all field names in the hash stored at key.
+	HKeys(key string) []string
 	HGetAll(key string) (map[string]any, error)
 }
 

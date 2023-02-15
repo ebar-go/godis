@@ -172,3 +172,12 @@ func (obj *Object) HDel(fields ...string) (count int) {
 	}
 	return
 }
+
+func (obj *Object) HKeys() []string {
+	if obj.Type != ObjectHash {
+		return nil
+	}
+
+	table := (*types.HashTable)(obj.Ptr)
+	return table.Fields()
+}

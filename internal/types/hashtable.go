@@ -28,3 +28,11 @@ func (table *HashTable) Len() int {
 func (table *HashTable) Del(field string) {
 	delete(table.items, field)
 }
+
+func (table *HashTable) Fields() []string {
+	fields := make([]string, 0, len(table.items))
+	for field, _ := range table.items {
+		fields = append(fields, field)
+	}
+	return fields
+}

@@ -27,9 +27,8 @@ func (hash Hash) HDel(key string, field ...string) int {
 	return hash.storage.HDel(key, field...)
 }
 
-func (hash Hash) HKeys(key string) ([]string, error) {
-	//TODO implement me
-	panic("implement me")
+func (hash Hash) HKeys(key string) []string {
+	return hash.storage.HKeys(key)
 }
 
 func (hash Hash) HGetAll(key string) (map[string]any, error) {

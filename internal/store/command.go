@@ -189,3 +189,22 @@ func (store *Store) HDel(key string, fields ...string) int {
 
 	return 0
 }
+
+func (store *Store) HKeys(key string) []string {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.HKeys()
+		}
+
+		entry = entry.Next
+	}
+
+	return nil
+}
