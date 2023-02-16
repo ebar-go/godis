@@ -214,3 +214,19 @@ func (obj *Object) SAddOrDie(members ...string) {
 		panic(err)
 	}
 }
+
+func (obj *Object) SRem(members ...string) (count int, err error) {
+	if obj.Type != ObjectSet {
+		err = errors.InvalidType
+		return
+	}
+
+	table := (*types.HashTable)(obj.Ptr)
+	for _, member := range members {
+		if table.Has(member) {
+			count++
+			table.Del(member)
+		}
+	}
+	return
+}

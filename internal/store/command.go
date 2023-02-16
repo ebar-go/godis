@@ -254,3 +254,22 @@ func (store *Store) SAdd(key string, members ...string) error {
 
 	return nil
 }
+
+func (store *Store) SRem(key string, members ...string) (int, error) {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.SRem(members...)
+		}
+
+		entry = entry.Next
+	}
+
+	return 0, nil
+}

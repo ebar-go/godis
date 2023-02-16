@@ -92,3 +92,19 @@ func TestSAdd(t *testing.T) {
 	srv.Set(strKey, 1)
 	assert.NotNil(t, srv.SAdd(strKey, "foo", "bar"))
 }
+
+func TestSRem(t *testing.T) {
+	srv := NewServer()
+	key := "someSet"
+	assert.Nil(t, srv.SAdd(key, "foo", "bar"))
+	count, err := srv.SRem(key, "foo", "age")
+	assert.Nil(t, err)
+	assert.Equal(t, 1, count)
+
+	strKey := "age"
+	srv.Set(strKey, 1)
+
+	count, err = srv.SRem(strKey, "foo", "bar")
+	assert.Equal(t, 0, count)
+	assert.NotNil(t, err)
+}

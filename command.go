@@ -87,7 +87,11 @@ type NormalSet interface {
 	// If key does not exist, a new set is created before adding the specified members.
 	// An error is returned when the value stored at key is not a set.
 	SAdd(key string, members ...string) error
-	SRem(key string, members ...string) error
+
+	// SRem remove the specified members from the set stored at key.
+	// If key does not exist, it is treated as an empty set and this command returns 0.
+	// An error is returned when the value stored at key is not a set.
+	SRem(key string, members ...string) (int, error)
 	SCard(key string) int64
 	SPop(key string) (string, error)
 	SIsMember(key string) (bool, error)

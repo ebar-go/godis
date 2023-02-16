@@ -10,9 +10,8 @@ func (set Set) SAdd(key string, members ...string) error {
 	return set.storage.SAdd(key, members...)
 }
 
-func (set Set) SRem(key string, members ...string) error {
-	//TODO implement me
-	panic("implement me")
+func (set Set) SRem(key string, members ...string) (int, error) {
+	return set.storage.SRem(key, members...)
 }
 
 func (set Set) SCard(key string) int64 {
