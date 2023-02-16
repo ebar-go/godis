@@ -27,9 +27,10 @@ type CommandGroup struct {
 
 func NewCommand(storage *store.Store) *CommandGroup {
 	return &CommandGroup{
-		Key:    command.NewKey(storage),
-		String: command.NewString(storage),
-		Hash:   command.NewHash(storage),
+		Key:       command.NewKey(storage),
+		String:    command.NewString(storage),
+		Hash:      command.NewHash(storage),
+		NormalSet: command.NewSet(storage),
 	}
 }
 
@@ -77,13 +78,16 @@ type Hash interface {
 	// HKeys Returns all field names in the hash stored at key.
 	HKeys(key string) []string
 
-	// HGetAll Returns all fields and values of the hash stored at key. 
+	// HGetAll Returns all fields and values of the hash stored at key.
 	HGetAll(key string) map[string]any
 }
 
 type NormalSet interface {
-	SAdd(key string, member string) error
-	SRem(key string, member string) error
+	// SAdd add the specified members to the set stored at key.
+	// If key does not exist, a new set is created before adding the specified members.
+	// An error is returned when the value stored at key is not a set.
+	SAdd(key string, members ...string) error
+	SRem(key string, members ...string) error
 	SCard(key string) int64
 	SPop(key string) (string, error)
 	SIsMember(key string) (bool, error)

@@ -24,14 +24,6 @@ func (dict *Dict) SetHash(index uint64, key string, field string, value any) err
 
 	for {
 		if entry == nil {
-			obj := NewHashObject()
-			_ = obj.SetHashField(field, value)
-			ht.Set(index, &DictEntry{
-				Key: NewKeyObject(key),
-				Val: obj,
-			})
-
-			ht.used++
 			break
 		}
 
@@ -42,6 +34,14 @@ func (dict *Dict) SetHash(index uint64, key string, field string, value any) err
 		entry = entry.Next
 	}
 
+	obj := NewHashObject()
+	_ = obj.SetHashField(field, value)
+	ht.Set(index, &DictEntry{
+		Key: NewKeyObject(key),
+		Val: obj,
+	})
+
+	ht.used++
 	return nil
 }
 

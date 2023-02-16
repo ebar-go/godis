@@ -226,3 +226,31 @@ func (store *Store) HGetAll(key string) map[string]any {
 
 	return nil
 }
+
+func (store *Store) SAdd(key string, members ...string) error {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.SAdd(members...)
+		}
+
+		entry = entry.Next
+	}
+
+	obj := NewSetObject()
+	obj.SAddOrDie(members...)
+	store.dict.HashTable().Set(index, &DictEntry{
+		Key: NewKeyObject(key),
+		Val: obj,
+	})
+
+	store.dict.HashTable().used++
+
+	return nil
+}

@@ -119,6 +119,12 @@ func NewHashObject() *Object {
 	return obj
 }
 
+func NewSetObject() *Object {
+	obj := &Object{Type: ObjectSet, Encoding: EncodingHT, Ptr: unsafe.Pointer(types.NewHashTable())}
+
+	return obj
+}
+
 func (obj *Object) SetHashField(field string, value any) error {
 	if obj.Type != ObjectHash {
 		return errors.InvalidType
@@ -188,4 +194,23 @@ func (obj *Object) HGetAll() map[string]any {
 
 	table := (*types.HashTable)(obj.Ptr)
 	return table.All()
+}
+
+func (obj *Object) SAdd(members ...string) error {
+	if obj.Type != ObjectSet {
+		return errors.InvalidType
+	}
+
+	table := (*types.HashTable)(obj.Ptr)
+	for _, member := range members {
+		table.Set(member, struct{}{})
+	}
+
+	return nil
+}
+
+func (obj *Object) SAddOrDie(members ...string) {
+	if err := obj.SAdd(members...); err != nil {
+		panic(err)
+	}
 }

@@ -82,3 +82,13 @@ func TestHGetAll(t *testing.T) {
 	assert.NotEmpty(t, srv.HGetAll("someHash"))
 	assert.Nil(t, srv.HGetAll("notExistKey"))
 }
+
+func TestSAdd(t *testing.T) {
+	srv := NewServer()
+	key := "someSet"
+	assert.Nil(t, srv.SAdd(key, "foo", "bar"))
+
+	strKey := "age"
+	srv.Set(strKey, 1)
+	assert.NotNil(t, srv.SAdd(strKey, "foo", "bar"))
+}
