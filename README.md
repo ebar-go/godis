@@ -10,3 +10,13 @@ implement redis+etcd  by golang
 - String Command
     - Get
     - Set
+- Hash Command
+  - HSet
+  - HGet
+  - HExists
+  - HLen
+  - HDel
+  - HKeys
+- Set Command
+  - SAdd
+  - SRem
