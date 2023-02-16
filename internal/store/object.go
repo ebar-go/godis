@@ -230,3 +230,12 @@ func (obj *Object) SRem(members ...string) (count int, err error) {
 	}
 	return
 }
+
+func (obj *Object) SCard() int64 {
+	if obj.Type != ObjectSet {
+		return 0
+	}
+
+	table := (*types.HashTable)(obj.Ptr)
+	return int64(table.Len())
+}

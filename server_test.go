@@ -108,3 +108,10 @@ func TestSRem(t *testing.T) {
 	assert.Equal(t, 0, count)
 	assert.NotNil(t, err)
 }
+
+func TestSCard(t *testing.T) {
+	srv := NewServer()
+	key := "someSet"
+	srv.SAdd(key, "foo", "bar")
+	assert.Equal(t, int64(2), srv.SCard(key))
+}

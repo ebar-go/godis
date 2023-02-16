@@ -15,8 +15,7 @@ func (set Set) SRem(key string, members ...string) (int, error) {
 }
 
 func (set Set) SCard(key string) int64 {
-	//TODO implement me
-	panic("implement me")
+	return set.storage.SCard(key)
 }
 
 func (set Set) SPop(key string) (string, error) {

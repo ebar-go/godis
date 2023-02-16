@@ -273,3 +273,22 @@ func (store *Store) SRem(key string, members ...string) (int, error) {
 
 	return 0, nil
 }
+
+func (store *Store) SCard(key string) int64 {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.SCard()
+		}
+
+		entry = entry.Next
+	}
+
+	return 0
+}

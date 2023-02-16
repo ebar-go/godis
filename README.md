@@ -20,3 +20,4 @@ implement redis+etcd  by golang
 - Set Command
   - SAdd
   - SRem
+  - SCard

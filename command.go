@@ -92,6 +92,8 @@ type NormalSet interface {
 	// If key does not exist, it is treated as an empty set and this command returns 0.
 	// An error is returned when the value stored at key is not a set.
 	SRem(key string, members ...string) (int, error)
+
+	// SCard returns the set cardinality (number of elements) of the set stored at key.
 	SCard(key string) int64
 	SPop(key string) (string, error)
 	SIsMember(key string) (bool, error)
