@@ -4,6 +4,7 @@ import (
 	"github.com/ebar-go/godis/errors"
 	"github.com/ebar-go/godis/internal/types"
 	"github.com/ebar-go/godis/pkg/convert"
+	"math/rand"
 	"strconv"
 	"unsafe"
 )
@@ -238,4 +239,22 @@ func (obj *Object) SCard() int64 {
 
 	table := (*types.HashTable)(obj.Ptr)
 	return int64(table.Len())
+}
+
+func (obj *Object) SPop(count int) []string {
+	if obj.Type != ObjectSet {
+		return nil
+	}
+
+	table := (*types.HashTable)(obj.Ptr)
+	res := make([]string, 0, count)
+
+	for i := 0; i < count; i++ {
+		fields := table.Fields()
+		idx := rand.Intn(len(fields))
+		res = append(res, fields[idx])
+		table.Del(fields[idx])
+	}
+
+	return res
 }

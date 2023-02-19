@@ -95,7 +95,10 @@ type NormalSet interface {
 
 	// SCard returns the set cardinality (number of elements) of the set stored at key.
 	SCard(key string) int64
-	SPop(key string) (string, error)
+
+	// SPop removes and returns one or more random members from the set value store at key.
+	SPop(key string, count int) []string
+
 	SIsMember(key string) (bool, error)
 	SMembers(key string) ([]string, error)
 }

@@ -292,3 +292,25 @@ func (store *Store) SCard(key string) int64 {
 
 	return 0
 }
+
+func (store *Store) SPop(key string, count int) []string {
+	if count <= 0 {
+		count = 1
+	}
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.SPop(count)
+		}
+
+		entry = entry.Next
+	}
+
+	return nil
+}

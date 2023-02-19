@@ -18,9 +18,8 @@ func (set Set) SCard(key string) int64 {
 	return set.storage.SCard(key)
 }
 
-func (set Set) SPop(key string) (string, error) {
-	//TODO implement me
-	panic("implement me")
+func (set Set) SPop(key string, count int) []string {
+	return set.storage.SPop(key, count)
 }
 
 func (set Set) SIsMember(key string) (bool, error) {

@@ -1,6 +1,7 @@
 package godis
 
 import (
+	"fmt"
 	"github.com/ebar-go/godis/constant"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -114,4 +115,14 @@ func TestSCard(t *testing.T) {
 	key := "someSet"
 	srv.SAdd(key, "foo", "bar")
 	assert.Equal(t, int64(2), srv.SCard(key))
+}
+
+func TestSPop(t *testing.T) {
+	srv := NewServer()
+	key := "someSet"
+	srv.SAdd(key, "foo", "bar")
+	items := srv.SPop(key, 1)
+	assert.NotEmpty(t, items)
+	fmt.Println(items)
+	assert.Equal(t, int64(1), srv.SCard(key))
 }
