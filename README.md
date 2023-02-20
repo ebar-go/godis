@@ -21,3 +21,6 @@ implement redis+etcd  by golang
   - SAdd
   - SRem
   - SCard
+  - SPop
+  - SIsMember
+  - SMembers
