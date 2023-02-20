@@ -270,3 +270,11 @@ func (obj *Object) SIsMember(member string) int {
 	}
 	return 0
 }
+func (obj *Object) SMembers() []string {
+	if obj.Type != ObjectSet {
+		return nil
+	}
+
+	table := (*types.HashTable)(obj.Ptr)
+	return table.Fields()
+}

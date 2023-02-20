@@ -26,9 +26,8 @@ func (set Set) SIsMember(key string, member string) int {
 	return set.storage.SIsMember(key, member)
 }
 
-func (set Set) SMembers(key string) ([]string, error) {
-	//TODO implement me
-	panic("implement me")
+func (set Set) SMembers(key string) []string {
+	return set.storage.SMembers(key)
 }
 
 func NewSet(storage *store.Store) *Set {

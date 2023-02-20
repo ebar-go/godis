@@ -135,3 +135,10 @@ func TestSIsMember(t *testing.T) {
 	assert.Equal(t, 0, srv.SIsMember(key, "notExistMember"))
 	assert.Equal(t, 0, srv.SIsMember("notExistKey", "foo"))
 }
+
+func TestSMembers(t *testing.T) {
+	srv := NewServer()
+	key := "someSet"
+	srv.SAdd(key, "foo", "bar")
+	assert.Equal(t, 2, len(srv.SMembers(key)))
+}
