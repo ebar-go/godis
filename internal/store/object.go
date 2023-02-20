@@ -258,3 +258,15 @@ func (obj *Object) SPop(count int) []string {
 
 	return res
 }
+
+func (obj *Object) SIsMember(member string) int {
+	if obj.Type != ObjectSet {
+		return 0
+	}
+
+	table := (*types.HashTable)(obj.Ptr)
+	if table.Has(member) {
+		return 1
+	}
+	return 0
+}

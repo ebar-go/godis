@@ -99,7 +99,8 @@ type NormalSet interface {
 	// SPop removes and returns one or more random members from the set value store at key.
 	SPop(key string, count int) []string
 
-	SIsMember(key string) (bool, error)
+	// SIsMember Returns if member is a member of the set stored at key.
+	SIsMember(key string, member string) int
 	SMembers(key string) ([]string, error)
 }
 

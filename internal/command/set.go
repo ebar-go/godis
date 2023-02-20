@@ -22,9 +22,8 @@ func (set Set) SPop(key string, count int) []string {
 	return set.storage.SPop(key, count)
 }
 
-func (set Set) SIsMember(key string) (bool, error) {
-	//TODO implement me
-	panic("implement me")
+func (set Set) SIsMember(key string, member string) int {
+	return set.storage.SIsMember(key, member)
 }
 
 func (set Set) SMembers(key string) ([]string, error) {

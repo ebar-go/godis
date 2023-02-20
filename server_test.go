@@ -126,3 +126,12 @@ func TestSPop(t *testing.T) {
 	fmt.Println(items)
 	assert.Equal(t, int64(1), srv.SCard(key))
 }
+
+func TestSIsMember(t *testing.T) {
+	srv := NewServer()
+	key := "someSet"
+	srv.SAdd(key, "foo", "bar")
+	assert.Equal(t, 1, srv.SIsMember(key, "foo"))
+	assert.Equal(t, 0, srv.SIsMember(key, "notExistMember"))
+	assert.Equal(t, 0, srv.SIsMember("notExistKey", "foo"))
+}

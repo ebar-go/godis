@@ -314,3 +314,22 @@ func (store *Store) SPop(key string, count int) []string {
 
 	return nil
 }
+
+func (store *Store) SIsMember(key string, member string) int {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.SIsMember(member)
+		}
+
+		entry = entry.Next
+	}
+
+	return 0
+}
