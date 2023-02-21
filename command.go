@@ -120,10 +120,21 @@ type SortedSet interface {
 }
 
 type List interface {
-	LPush(key string, value ...string) error
-	RPush(key string, value ...string) error
-	LPop(key string) (string, error)
-	RPop(key string) (string, error)
-	LRange(key string, start, stop int64) ([]string, error)
-	Len(key string) int64
+	// LPush insert all the specified values at the head of the list stored at key
+	LPush(key string, value ...string) int
+
+	// RPush insert all the specified values at the head of the list stored at key.
+	RPush(key string, value ...string) int
+
+	// LPop Removes and returns the first elements of the list stored at key.
+	LPop(key string, count int) []string
+
+	// RPop Removes and returns the last elements of the list stored at key.
+	RPop(key string, count int) []string
+
+	// LRange Returns the specified elements of the list stored at key.
+	LRange(key string, start, stop int64) []string
+
+	// LLen Returns the length of the list stored at key.
+	LLen(key string) int
 }

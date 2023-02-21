@@ -6,32 +6,31 @@ type List struct {
 	storage *store.Store
 }
 
-func (list List) LPush(key string, value ...string) error {
+func (list List) LPush(key string, value ...string) int {
+	return list.storage.LPush(key, value...)
+}
+
+func (list List) RPush(key string, value ...string) int {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (list List) RPush(key string, value ...string) error {
+func (list List) LPop(key string, count int) []string {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (list List) LPop(key string) (string, error) {
+func (list List) RPop(key string, count int) []string {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (list List) RPop(key string) (string, error) {
+func (list List) LRange(key string, start, stop int64) []string {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (list List) LRange(key string, start, stop int64) ([]string, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (list List) Len(key string) int64 {
+func (list List) LLen(key string) int {
 	//TODO implement me
 	panic("implement me")
 }

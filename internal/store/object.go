@@ -126,6 +126,10 @@ func NewSetObject() *Object {
 	return obj
 }
 
+func NewListObject() *Object {
+	return &Object{Type: ObjectList, Encoding: EncodingQuickList, Ptr: unsafe.Pointer(types.NewQuickList())}
+}
+
 func (obj *Object) SetHashField(field string, value any) error {
 	if obj.Type != ObjectHash {
 		return errors.InvalidType
@@ -277,4 +281,18 @@ func (obj *Object) SMembers() []string {
 
 	table := (*types.HashTable)(obj.Ptr)
 	return table.Fields()
+}
+
+func (obj *Object) LPush(values ...string) int {
+	if obj.Type != ObjectList {
+		return -1
+	}
+
+	list := (*types.QuickList)(obj.Ptr)
+	count := len(values)
+	for _, item := range values {
+		list.PushTail(item)
+	}
+	return count
+
 }

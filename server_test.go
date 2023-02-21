@@ -142,3 +142,9 @@ func TestSMembers(t *testing.T) {
 	srv.SAdd(key, "foo", "bar")
 	assert.Equal(t, 2, len(srv.SMembers(key)))
 }
+
+func TestLPush(t *testing.T) {
+	srv := NewServer()
+	key := "someList"
+	assert.Equal(t, 2, srv.LPush(key, "foo", "bar"))
+}

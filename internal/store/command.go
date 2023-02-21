@@ -352,3 +352,23 @@ func (store *Store) SMembers(key string) []string {
 
 	return nil
 }
+
+func (store *Store) LPush(key string, val ...string) int {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.LPush(val...)
+		}
+
+		entry = entry.Next
+	}
+
+	obj := NewListObject()
+	return obj.LPush(val...)
+}

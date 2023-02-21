@@ -11,7 +11,7 @@ func TestQuickList(t *testing.T) {
 	ql.PushHead(2)
 	ql.PushHead(3)
 
-	result := ql.LRange(1, 4)
+	result := ql.LRange(0, 4)
 	for _, entry := range result {
 		fmt.Println(entry)
 	}
