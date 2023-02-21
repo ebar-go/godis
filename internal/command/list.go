@@ -1,6 +1,9 @@
 package command
 
+import "github.com/ebar-go/godis/internal/store"
+
 type List struct {
+	storage *store.Store
 }
 
 func (list List) LPush(key string, value ...string) error {
@@ -31,4 +34,8 @@ func (list List) LRange(key string, start, stop int64) ([]string, error) {
 func (list List) Len(key string) int64 {
 	//TODO implement me
 	panic("implement me")
+}
+
+func NewList(storage *store.Store) *List {
+	return &List{storage: storage}
 }

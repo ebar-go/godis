@@ -32,6 +32,7 @@ func NewCommand(storage *store.Store) *CommandGroup {
 		Hash:      command.NewHash(storage),
 		NormalSet: command.NewSet(storage),
 		SortedSet: command.NewSortedSet(storage),
+		List:      command.NewList(storage),
 	}
 }
 
