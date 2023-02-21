@@ -31,6 +31,7 @@ func NewCommand(storage *store.Store) *CommandGroup {
 		String:    command.NewString(storage),
 		Hash:      command.NewHash(storage),
 		NormalSet: command.NewSet(storage),
+		SortedSet: command.NewSortedSet(storage),
 	}
 }
 
@@ -103,7 +104,7 @@ type NormalSet interface {
 	SIsMember(key string, member string) int
 
 	// SMembers returns all the members of the set value stored at key.
-	SMembers(key string) ([]string)
+	SMembers(key string) []string
 }
 
 type SortedSet interface {

@@ -1,6 +1,9 @@
 package command
 
+import "github.com/ebar-go/godis/internal/store"
+
 type SortedSet struct {
+	storage *store.Store
 }
 
 func (set SortedSet) ZAdd(key string, member string, score float64) error {
@@ -41,4 +44,8 @@ func (set SortedSet) ZScore(key string, member string) (float64, error) {
 func (set SortedSet) ZRank(key string, member string) (int64, error) {
 	//TODO implement me
 	panic("implement me")
+}
+
+func NewSortedSet(storage *store.Store) *SortedSet {
+	return &SortedSet{storage: storage}
 }
