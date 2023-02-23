@@ -309,3 +309,12 @@ func (obj *Object) RPush(values ...string) int {
 	return count
 
 }
+
+func (obj *Object) LLen() uint64 {
+	if obj.Type != ObjectList {
+		return 0
+	}
+
+	list := (*types.QuickList)(obj.Ptr)
+	return list.Len()
+}

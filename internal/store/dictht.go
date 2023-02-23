@@ -15,3 +15,7 @@ func (ht *DictHT) Set(index uint64, entry *DictEntry) {
 	ht.used++
 	ht.table[index&ht.mask] = entry
 }
+
+func (ht *DictHT) Increment() {
+	ht.used++
+}

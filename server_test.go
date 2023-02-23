@@ -147,4 +147,22 @@ func TestLPush(t *testing.T) {
 	srv := NewServer()
 	key := "someList"
 	assert.Equal(t, 2, srv.LPush(key, "foo", "bar"))
+
+}
+
+func TestRPush(t *testing.T) {
+	srv := NewServer()
+	key := "someList"
+	assert.Equal(t, 2, srv.LPush(key, "foo", "bar"))
+}
+
+func TestLLen(t *testing.T) {
+	srv := NewServer()
+	key := "someList"
+
+	srv.LPush(key, "foo", "bar")
+	assert.Equal(t, uint64(2), srv.LLen(key))
+
+	srv.RPush(key, "foo2")
+	assert.Equal(t, uint64(3), srv.LLen(key))
 }

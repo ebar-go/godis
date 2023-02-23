@@ -370,7 +370,15 @@ func (store *Store) LPush(key string, val ...string) int {
 	}
 
 	obj := NewListObject()
-	return obj.LPush(val...)
+	count := obj.LPush(val...)
+	store.dict.HashTable().Set(index, &DictEntry{
+		Key: NewKeyObject(key),
+		Val: obj,
+	})
+
+	store.dict.HashTable().Increment()
+
+	return count
 }
 
 func (store *Store) RPush(key string, val ...string) int {
@@ -390,5 +398,32 @@ func (store *Store) RPush(key string, val ...string) int {
 	}
 
 	obj := NewListObject()
-	return obj.LPush(val...)
+	count := obj.RPush(val...)
+	store.dict.HashTable().Set(index, &DictEntry{
+		Key: NewKeyObject(key),
+		Val: obj,
+	})
+
+	store.dict.HashTable().Increment()
+
+	return count
+}
+
+func (store *Store) LLen(key string) uint64 {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.LLen()
+		}
+
+		entry = entry.Next
+	}
+
+	return 0
 }

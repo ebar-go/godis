@@ -136,5 +136,5 @@ type List interface {
 	LRange(key string, start, stop int64) []string
 
 	// LLen Returns the length of the list stored at key.
-	LLen(key string) int
+	LLen(key string) uint64
 }

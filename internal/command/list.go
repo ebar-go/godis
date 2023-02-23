@@ -29,9 +29,8 @@ func (list List) LRange(key string, start, stop int64) []string {
 	panic("implement me")
 }
 
-func (list List) LLen(key string) int {
-	//TODO implement me
-	panic("implement me")
+func (list List) LLen(key string) uint64 {
+	return list.storage.LLen(key)
 }
 
 func NewList(storage *store.Store) *List {

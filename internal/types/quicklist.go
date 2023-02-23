@@ -38,9 +38,13 @@ func NewQuickListNode() *QuickListNode {
 	}
 }
 
+func (ql *QuickList) Len() uint64 {
+	return ql.count
+}
+
 func (ql *QuickList) PushHead(value any) {
 	entry := NewEntry(value)
-	ql.fill++
+	ql.count++
 	if ql.head.zl.Full() {
 		node := NewQuickListNode()
 		node.next = ql.head
@@ -55,7 +59,7 @@ func (ql *QuickList) PushHead(value any) {
 
 func (ql *QuickList) PushTail(value any) {
 	entry := NewEntry(value)
-	ql.fill++
+	ql.count++
 	if ql.tail.zl.Full() {
 		node := NewQuickListNode()
 		node.prev = ql.tail
@@ -66,6 +70,7 @@ func (ql *QuickList) PushTail(value any) {
 	}
 
 	ql.tail.zl.Insert(entry)
+
 }
 func (ql *QuickList) InsertAfter()              {}
 func (ql *QuickList) InsertBefore()             {}
