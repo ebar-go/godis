@@ -296,3 +296,16 @@ func (obj *Object) LPush(values ...string) int {
 	return count
 
 }
+func (obj *Object) RPush(values ...string) int {
+	if obj.Type != ObjectList {
+		return -1
+	}
+
+	list := (*types.QuickList)(obj.Ptr)
+	count := len(values)
+	for _, item := range values {
+		list.PushHead(item)
+	}
+	return count
+
+}

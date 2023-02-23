@@ -11,8 +11,7 @@ func (list List) LPush(key string, value ...string) int {
 }
 
 func (list List) RPush(key string, value ...string) int {
-	//TODO implement me
-	panic("implement me")
+	return list.storage.RPush(key, value...)
 }
 
 func (list List) LPop(key string, count int) []string {

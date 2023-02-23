@@ -372,3 +372,23 @@ func (store *Store) LPush(key string, val ...string) int {
 	obj := NewListObject()
 	return obj.LPush(val...)
 }
+
+func (store *Store) RPush(key string, val ...string) int {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.RPush(val...)
+		}
+
+		entry = entry.Next
+	}
+
+	obj := NewListObject()
+	return obj.LPush(val...)
+}
