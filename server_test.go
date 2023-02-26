@@ -166,3 +166,12 @@ func TestLLen(t *testing.T) {
 	srv.RPush(key, "foo2")
 	assert.Equal(t, uint64(3), srv.LLen(key))
 }
+
+func TestLPop(t *testing.T) {
+	srv := NewServer()
+	key := "someList"
+
+	srv.LPush(key, "foo", "bar")
+	fmt.Println(srv.LPop(key, 1))
+	assert.Equal(t, uint64(1), srv.LLen(key))
+}

@@ -36,3 +36,15 @@ func (zl *ZipList) Insert(entry *Entry) {
 	zl.entries[zl.len] = entry
 	zl.len++
 }
+
+func (zl *ZipList) Remove(entry *Entry) bool {
+	for i := 0; i < int(zl.len); i++ {
+		if zl.entries[i].Value == entry.Value {
+			zl.entries = append(zl.entries[:i], zl.entries[i+1:]...)
+			zl.len--
+			return true
+		}
+	}
+
+	return false
+}

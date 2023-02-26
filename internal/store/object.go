@@ -318,3 +318,23 @@ func (obj *Object) LLen() uint64 {
 	list := (*types.QuickList)(obj.Ptr)
 	return list.Len()
 }
+
+func (obj *Object) LPop(count int) []string {
+	if obj.Type != ObjectList {
+		return nil
+	}
+
+	list := (*types.QuickList)(obj.Ptr)
+	if uint64(count) > list.Len() {
+		count = int(list.Len())
+	}
+
+	items := list.LRange(0, int64(count))
+	res := make([]string, count)
+	for idx, item := range items {
+		res[idx] = item.Value.(string)
+		list.DelEntry(item)
+	}
+
+	return res
+}

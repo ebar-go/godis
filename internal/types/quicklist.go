@@ -75,15 +75,27 @@ func (ql *QuickList) PushTail(value any) {
 func (ql *QuickList) InsertAfter()              {}
 func (ql *QuickList) InsertBefore()             {}
 func (ql *QuickList) ReplaceAtIndex(index uint) {}
-func (ql *QuickList) DelEntry()                 {}
-func (ql *QuickList) DelRange()                 {}
+func (ql *QuickList) DelEntry(entry *Entry) {
+	node := ql.head
+	for node != nil {
+		if node.zl.Remove(entry) {
+			ql.count--
+			return
+		}
+		node = node.next
+	}
 
-func (ql *QuickList) LRange(start, end uint16) []*Entry {
-	if start > ql.fill {
+}
+func (ql *QuickList) DelRange() {
+
+}
+
+func (ql *QuickList) LRange(start, end int64) []*Entry {
+	if start > int64(ql.count) {
 		return nil
 	}
-	if end > ql.fill {
-		end = ql.fill
+	if end > int64(ql.count) {
+		end = int64(ql.count)
 	}
 	index := start
 	node := ql.head
@@ -94,7 +106,7 @@ func (ql *QuickList) LRange(start, end uint16) []*Entry {
 		if node == nil {
 			return nil
 		}
-		zipListLen := uint16(node.zl.len)
+		zipListLen := int64(node.zl.len)
 		if index < zipListLen {
 			break
 		}
@@ -107,7 +119,7 @@ func (ql *QuickList) LRange(start, end uint16) []*Entry {
 			break
 		}
 
-		zipListLen := uint16(node.zl.len)
+		zipListLen := int64(node.zl.len)
 		if n <= zipListLen-index {
 			result = append(result, node.zl.entries[index:index+n]...)
 			break
