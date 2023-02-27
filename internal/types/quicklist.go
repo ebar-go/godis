@@ -125,7 +125,7 @@ func (ql *QuickList) LRange(start, end int64) []*Entry {
 	}
 	index := start
 	node := ql.head
-	n := end - start
+	n := end - start + 1
 	result := make([]*Entry, 0, n)
 	// 找到应该从哪个node开始遍历
 	for {

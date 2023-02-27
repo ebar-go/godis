@@ -357,3 +357,19 @@ func (obj *Object) RPop(count int) []string {
 
 	return res
 }
+
+func (obj *Object) LRange(start, end int64) []string {
+	if obj.Type != ObjectList {
+		return nil
+	}
+
+	list := (*types.QuickList)(obj.Ptr)
+
+	items := list.LRange(start, end)
+	res := make([]string, len(items))
+	for idx, item := range items {
+		res[idx] = item.Value.(string)
+	}
+
+	return res
+}

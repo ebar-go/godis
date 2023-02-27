@@ -465,3 +465,22 @@ func (store *Store) RPop(key string, count int) []string {
 
 	return nil
 }
+
+func (store *Store) LRange(key string, start, end int64) []string {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.LRange(start, end)
+		}
+
+		entry = entry.Next
+	}
+
+	return nil
+}

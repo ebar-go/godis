@@ -23,8 +23,7 @@ func (list List) RPop(key string, count int) []string {
 }
 
 func (list List) LRange(key string, start, stop int64) []string {
-	//TODO implement me
-	panic("implement me")
+	return list.storage.LRange(key, start, stop)
 }
 
 func (list List) LLen(key string) uint64 {
