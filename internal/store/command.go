@@ -446,3 +446,22 @@ func (store *Store) LPop(key string, count int) []string {
 
 	return nil
 }
+
+func (store *Store) RPop(key string, count int) []string {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.RPop(count)
+		}
+
+		entry = entry.Next
+	}
+
+	return nil
+}

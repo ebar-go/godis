@@ -338,3 +338,22 @@ func (obj *Object) LPop(count int) []string {
 
 	return res
 }
+
+func (obj *Object) RPop(count int) []string {
+	if obj.Type != ObjectList {
+		return nil
+	}
+
+	list := (*types.QuickList)(obj.Ptr)
+	if uint64(count) > list.Len() {
+		count = int(list.Len())
+	}
+
+	res := make([]string, count)
+	items := list.RPop(count)
+	for idx, item := range items {
+		res[idx] = item.Value.(string)
+	}
+
+	return res
+}

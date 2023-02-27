@@ -19,8 +19,7 @@ func (list List) LPop(key string, count int) []string {
 }
 
 func (list List) RPop(key string, count int) []string {
-	//TODO implement me
-	panic("implement me")
+	return list.storage.RPop(key, count)
 }
 
 func (list List) LRange(key string, start, stop int64) []string {

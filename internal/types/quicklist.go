@@ -90,6 +90,32 @@ func (ql *QuickList) DelRange() {
 
 }
 
+func (ql *QuickList) RPop(count int) []*Entry {
+	items := make([]*Entry, 0, count)
+	node := ql.head
+	for node.zl.len == 0 {
+		node = node.next
+	}
+	ql.count -= uint64(count)
+	for count > 0 {
+		diff := int(node.zl.len) - count
+		if diff >= 0 {
+			items = append(items, node.zl.entries[diff:node.zl.len]...)
+			node.zl.entries = node.zl.entries[:diff]
+			node.zl.len = uint8(diff)
+			count = 0
+		} else {
+			diff = 0 - diff
+			items = append(items, node.zl.entries[:node.zl.len]...)
+			count = count - int(node.zl.len)
+			node = node.next
+		}
+
+	}
+
+	return items
+}
+
 func (ql *QuickList) LRange(start, end int64) []*Entry {
 	if start > int64(ql.count) {
 		return nil
