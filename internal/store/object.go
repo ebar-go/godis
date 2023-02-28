@@ -386,3 +386,12 @@ func (obj *Object) ZAdd(member string, score float64) int {
 	list.Insert(score, member)
 	return 1
 }
+
+func (obj *Object) ZCard() int64 {
+	if obj.Type != ObjectSortedSet {
+		return 0
+	}
+
+	list := (*types.SkipList)(obj.Ptr)
+	return list.Length()
+}

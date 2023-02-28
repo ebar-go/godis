@@ -512,3 +512,22 @@ func (store *Store) ZAdd(key string, member string, score float64) int {
 
 	return count
 }
+
+func (store *Store) ZCard(key string) int64 {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.ZCard()
+		}
+
+		entry = entry.Next
+	}
+
+	return 0
+}

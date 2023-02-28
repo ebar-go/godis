@@ -109,7 +109,10 @@ type NormalSet interface {
 }
 
 type SortedSet interface {
+	// ZAdd Adds all the specified members with the specified scores to the sorted set stored at key.
 	ZAdd(key string, member string, score float64) int
+
+	// Zcard Returns the sorted set cardinality (number of elements) of the sorted set stored at key.
 	ZCard(key string) int64
 	ZCount(key string, min, max float64) int64
 	ZRange(key string, start, stop int64) ([]string, error)

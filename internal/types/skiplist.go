@@ -9,7 +9,7 @@ const (
 
 type SkipList struct {
 	head, tail *SkipListNode
-	length     uint
+	length     int64
 	level      uint
 }
 
@@ -73,6 +73,10 @@ func (sl *SkipList) Search(score float64) (*SkipListNode, bool) {
 	}
 
 	return nil, false
+}
+
+func (sl *SkipList) Length() int64 {
+	return sl.length
 }
 
 func getRandLevel() uint {

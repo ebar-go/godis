@@ -11,8 +11,7 @@ func (set SortedSet) ZAdd(key string, member string, score float64) int {
 }
 
 func (set SortedSet) ZCard(key string) int64 {
-	//TODO implement me
-	panic("implement me")
+	return set.storage.ZCard(key)
 }
 
 func (set SortedSet) ZCount(key string, min, max float64) int64 {

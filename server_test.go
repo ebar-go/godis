@@ -200,3 +200,12 @@ func TestZAdd(t *testing.T) {
 	assert.Equal(t, 1, srv.ZAdd(key, "foo", 123))
 	assert.Equal(t, 1, srv.ZAdd(key, "bar", 456))
 }
+
+func TestZCard(t *testing.T) {
+	srv := NewServer()
+	key := "someList"
+
+	srv.ZAdd(key, "foo", 123)
+	assert.Equal(t, int64(1), srv.ZCard(key))
+
+}
