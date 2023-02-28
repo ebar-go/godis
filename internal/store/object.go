@@ -130,6 +130,9 @@ func NewListObject() *Object {
 	return &Object{Type: ObjectList, Encoding: EncodingQuickList, Ptr: unsafe.Pointer(types.NewQuickList())}
 }
 
+func NewSortedSetObject() *Object {
+	return &Object{Type: ObjectSortedSet, Encoding: EncodingSkipList, Ptr: unsafe.Pointer(types.NewSkipList())}
+}
 func (obj *Object) SetHashField(field string, value any) error {
 	if obj.Type != ObjectHash {
 		return errors.InvalidType
@@ -372,4 +375,14 @@ func (obj *Object) LRange(start, end int64) []string {
 	}
 
 	return res
+}
+
+func (obj *Object) ZAdd(member string, score float64) int {
+	if obj.Type != ObjectSortedSet {
+		return 0
+	}
+
+	list := (*types.SkipList)(obj.Ptr)
+	list.Insert(score, member)
+	return 1
 }

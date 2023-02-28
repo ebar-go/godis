@@ -35,13 +35,13 @@ type SkipListLevel struct {
 func (sl *SkipList) Insert(score float64, val any) {
 	update := make(map[uint]*SkipListNode, SkipListMaxLevel)
 	node := sl.head
-	for i := sl.level - 1; i >= 0; i-- {
 
+	for i := int(sl.level) - 1; i >= 0; i-- {
 		for node.levels[i].forward != nil && node.levels[i].forward.score < score {
 			node = node.levels[i].forward
 		}
 
-		update[i] = node
+		update[uint(i)] = node
 	}
 	node = node.levels[0].forward
 	if node != nil && node.score == score {

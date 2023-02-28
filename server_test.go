@@ -192,3 +192,11 @@ func TestLRange(t *testing.T) {
 	srv.LPush(key, "foo", "bar")
 	fmt.Println(srv.LRange(key, 0, 1))
 }
+
+func TestZAdd(t *testing.T) {
+	srv := NewServer()
+	key := "someList"
+
+	assert.Equal(t, 1, srv.ZAdd(key, "foo", 123))
+	assert.Equal(t, 1, srv.ZAdd(key, "bar", 456))
+}

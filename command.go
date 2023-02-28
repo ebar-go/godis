@@ -109,7 +109,7 @@ type NormalSet interface {
 }
 
 type SortedSet interface {
-	ZAdd(key string, member string, score float64) error
+	ZAdd(key string, member string, score float64) int
 	ZCard(key string) int64
 	ZCount(key string, min, max float64) int64
 	ZRange(key string, start, stop int64) ([]string, error)

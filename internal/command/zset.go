@@ -6,9 +6,8 @@ type SortedSet struct {
 	storage *store.Store
 }
 
-func (set SortedSet) ZAdd(key string, member string, score float64) error {
-	//TODO implement me
-	panic("implement me")
+func (set SortedSet) ZAdd(key string, member string, score float64) int {
+	return set.storage.ZAdd(key, member, score)
 }
 
 func (set SortedSet) ZCard(key string) int64 {

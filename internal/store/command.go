@@ -484,3 +484,31 @@ func (store *Store) LRange(key string, start, end int64) []string {
 
 	return nil
 }
+
+func (store *Store) ZAdd(key string, member string, score float64) int {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.ZAdd(member, score)
+		}
+
+		entry = entry.Next
+	}
+
+	obj := NewSortedSetObject()
+	count := obj.ZAdd(member, score)
+	store.dict.HashTable().Set(index, &DictEntry{
+		Key: NewKeyObject(key),
+		Val: obj,
+	})
+
+	store.dict.HashTable().Increment()
+
+	return count
+}
