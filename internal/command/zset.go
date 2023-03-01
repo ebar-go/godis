@@ -29,9 +29,8 @@ func (set SortedSet) ZRangeByScore(key string, min, max float64) ([]string, erro
 	panic("implement me")
 }
 
-func (set SortedSet) ZRem(key string, member string) error {
-	//TODO implement me
-	panic("implement me")
+func (set SortedSet) ZRem(key string, member ...string) int {
+	return set.storage.ZRem(key, member...)
 }
 
 func (set SortedSet) ZScore(key string, member string) (float64, error) {

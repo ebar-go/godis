@@ -50,7 +50,7 @@ func (sl *SkipList) Insert(score float64, val any) {
 
 	level := getRandLevel()
 
-	newNode := &SkipListNode{score: score, Value: val, levels: make([]SkipListLevel, level)}
+	newNode := &SkipListNode{score: score, Value: val, levels: make([]SkipListLevel, level), backward: node}
 	for i := uint(0); i < level; i++ {
 		newNode.levels[i].forward = update[i].levels[i].forward
 		update[i].levels[i].forward = newNode
@@ -77,6 +77,28 @@ func (sl *SkipList) Search(score float64) (*SkipListNode, bool) {
 
 func (sl *SkipList) Length() int64 {
 	return sl.length
+}
+
+func (sl *SkipList) Remove(member any) bool {
+	node := sl.head
+	for node != nil {
+		if node.Value == member {
+			for i := 0; i < len(node.levels); i++ {
+				if node.backward == nil {
+
+				} else {
+					node.backward.levels[i].forward = node.levels[i].forward
+				}
+
+			}
+			node.levels[0].forward.backward = node.backward
+			sl.length--
+			return true
+		}
+		node = node.levels[0].forward
+	}
+
+	return false
 }
 
 func getRandLevel() uint {

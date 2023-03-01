@@ -209,3 +209,12 @@ func TestZCard(t *testing.T) {
 	assert.Equal(t, int64(1), srv.ZCard(key))
 
 }
+
+func TestZRem(t *testing.T) {
+	srv := NewServer()
+	key := "someList"
+
+	srv.ZAdd(key, "foo", 123)
+	srv.ZAdd(key, "bar", 456)
+	assert.Equal(t, 1, srv.ZRem(key, "foo"))
+}

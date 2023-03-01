@@ -395,3 +395,19 @@ func (obj *Object) ZCard() int64 {
 	list := (*types.SkipList)(obj.Ptr)
 	return list.Length()
 }
+
+func (obj *Object) ZRem(members ...string) int {
+	if obj.Type != ObjectSortedSet {
+		return 0
+	}
+
+	list := (*types.SkipList)(obj.Ptr)
+	count := 0
+	for _, member := range members {
+		if list.Remove(member) {
+			count++
+		}
+	}
+
+	return count
+}

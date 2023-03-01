@@ -117,7 +117,7 @@ type SortedSet interface {
 	ZCount(key string, min, max float64) int64
 	ZRange(key string, start, stop int64) ([]string, error)
 	ZRangeByScore(key string, min, max float64) ([]string, error)
-	ZRem(key string, member string) error
+	ZRem(key string, member ...string) int
 	ZScore(key string, member string) (float64, error)
 	ZRank(key string, member string) (int64, error)
 }

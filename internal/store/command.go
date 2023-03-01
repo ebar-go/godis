@@ -531,3 +531,22 @@ func (store *Store) ZCard(key string) int64 {
 
 	return 0
 }
+
+func (store *Store) ZRem(key string, members ...string) int {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.ZRem(members...)
+		}
+
+		entry = entry.Next
+	}
+
+	return 0
+}
