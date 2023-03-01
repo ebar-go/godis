@@ -411,3 +411,13 @@ func (obj *Object) ZRem(members ...string) int {
 
 	return count
 }
+
+func (obj *Object) ZScore(member string) (float64, bool) {
+	if obj.Type != ObjectSortedSet {
+		return 0, false
+	}
+
+	list := (*types.SkipList)(obj.Ptr)
+
+	return list.Score(member)
+}

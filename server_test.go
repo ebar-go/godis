@@ -218,3 +218,14 @@ func TestZRem(t *testing.T) {
 	srv.ZAdd(key, "bar", 456)
 	assert.Equal(t, 1, srv.ZRem(key, "foo"))
 }
+
+func TestZScore(t *testing.T) {
+	srv := NewServer()
+	key := "someList"
+
+	srv.ZAdd(key, "foo", 123)
+	srv.ZAdd(key, "bar", 456)
+	score, err := srv.ZScore(key, "bar")
+	assert.Nil(t, err)
+	assert.Equal(t, float64(456), score)
+}

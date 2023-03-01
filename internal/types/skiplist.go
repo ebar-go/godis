@@ -79,6 +79,18 @@ func (sl *SkipList) Length() int64 {
 	return sl.length
 }
 
+func (sl *SkipList) Score(member any) (float64, bool) {
+	node := sl.head
+	for node != nil {
+		if node.Value == member {
+			return node.score, true
+		}
+		node = node.levels[0].forward
+	}
+
+	return 0, false
+}
+
 func (sl *SkipList) Remove(member any) bool {
 	node := sl.head
 	for node != nil {

@@ -34,8 +34,7 @@ func (set SortedSet) ZRem(key string, member ...string) int {
 }
 
 func (set SortedSet) ZScore(key string, member string) (float64, error) {
-	//TODO implement me
-	panic("implement me")
+	return set.storage.ZScore(key, member)
 }
 
 func (set SortedSet) ZRank(key string, member string) (int64, error) {

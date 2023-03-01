@@ -117,7 +117,11 @@ type SortedSet interface {
 	ZCount(key string, min, max float64) int64
 	ZRange(key string, start, stop int64) ([]string, error)
 	ZRangeByScore(key string, min, max float64) ([]string, error)
+
+	// ZRem Removes the specified members from the sorted set stored at key. Non existing members are ignored.
 	ZRem(key string, member ...string) int
+
+	// ZScore Returns the score of member in the sorted set at key.
 	ZScore(key string, member string) (float64, error)
 	ZRank(key string, member string) (int64, error)
 }

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"github.com/ebar-go/godis/errors"
 	"hash/crc64"
 )
 
@@ -549,4 +550,27 @@ func (store *Store) ZRem(key string, members ...string) int {
 	}
 
 	return 0
+}
+
+func (store *Store) ZScore(key string, member string) (float64, error) {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			score, exist := entry.Val.ZScore(member)
+			if exist {
+				return score, nil
+			}
+			return 0, errors.Nil
+		}
+
+		entry = entry.Next
+	}
+
+	return 0, errors.Nil
 }
