@@ -19,9 +19,8 @@ func (set SortedSet) ZCount(key string, min, max float64) int64 {
 	panic("implement me")
 }
 
-func (set SortedSet) ZRange(key string, start, stop int64) ([]string, error) {
-	//TODO implement me
-	panic("implement me")
+func (set SortedSet) ZRange(key string, start, stop int64) []string {
+	return set.storage.ZRange(key, start, stop)
 }
 
 func (set SortedSet) ZRangeByScore(key string, min, max float64) ([]string, error) {

@@ -229,3 +229,12 @@ func TestZScore(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, float64(456), score)
 }
+
+func TestZRange(t *testing.T) {
+	srv := NewServer()
+	key := "someList"
+
+	srv.ZAdd(key, "foo", 123)
+	srv.ZAdd(key, "bar", 456)
+	fmt.Println(srv.ZRange(key, 0, 2))
+}

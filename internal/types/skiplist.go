@@ -113,6 +113,25 @@ func (sl *SkipList) Remove(member any) bool {
 	return false
 }
 
+func (sl *SkipList) Range(start, stop int64) []*SkipListNode {
+	if stop > sl.length {
+		stop = sl.length
+	}
+	nodes := make([]*SkipListNode, 0, stop-start+1)
+
+	node := sl.head
+	for i := int64(0); i < start; i++ {
+		node = node.levels[0].forward
+	}
+
+	for idx := start; idx < stop; idx++ {
+		node = node.levels[0].forward
+		nodes = append(nodes, node)
+	}
+
+	return nodes
+}
+
 func getRandLevel() uint {
 	level := uint(1)
 	for rand.Float32() < p && level < SkipListMaxLevel {

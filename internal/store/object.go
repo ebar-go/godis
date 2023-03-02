@@ -421,3 +421,17 @@ func (obj *Object) ZScore(member string) (float64, bool) {
 
 	return list.Score(member)
 }
+
+func (obj *Object) ZRange(start, stop int64) []string {
+	if obj.Type != ObjectSortedSet {
+		return nil
+	}
+
+	list := (*types.SkipList)(obj.Ptr)
+	nodes := list.Range(start, stop)
+	items := make([]string, 0, len(nodes))
+	for _, node := range nodes {
+		items = append(items, node.Value.(string))
+	}
+	return items
+}

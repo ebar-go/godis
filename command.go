@@ -115,7 +115,9 @@ type SortedSet interface {
 	// Zcard Returns the sorted set cardinality (number of elements) of the sorted set stored at key.
 	ZCard(key string) int64
 	ZCount(key string, min, max float64) int64
-	ZRange(key string, start, stop int64) ([]string, error)
+
+	// ZRange Returns the specified range of elements in the sorted set
+	ZRange(key string, start, stop int64) []string
 	ZRangeByScore(key string, min, max float64) ([]string, error)
 
 	// ZRem Removes the specified members from the sorted set stored at key. Non existing members are ignored.

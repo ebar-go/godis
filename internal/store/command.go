@@ -574,3 +574,22 @@ func (store *Store) ZScore(key string, member string) (float64, error) {
 
 	return 0, errors.Nil
 }
+
+func (store *Store) ZRange(key string, start, stop int64) []string {
+	index := HashIndex(key)
+	entry := store.dict.HashTable().Get(index)
+
+	for {
+		if entry == nil {
+			break
+		}
+
+		if entry.Key.String() == key {
+			return entry.Val.ZRange(start, stop)
+		}
+
+		entry = entry.Next
+	}
+
+	return nil
+}
