@@ -1,4 +1,4 @@
-package godis
+package internal
 
 import (
 	"fmt"

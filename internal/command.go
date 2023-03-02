@@ -1,4 +1,4 @@
-package godis
+package internal
 
 import (
 	"github.com/ebar-go/godis/internal/command"
