@@ -1,12 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"github.com/ebar-go/godis/internal"
 	"github.com/spf13/cobra"
 )
 
 func NewCommand() *cobra.Command {
-	return &cobra.Command{
+	rootCmd := &cobra.Command{
 		Use:   "godis",
 		Short: "godis is a key-value storage",
 		Long: `A Fast key-value storage like redis implement by Golang
@@ -15,5 +16,26 @@ func NewCommand() *cobra.Command {
 			server := internal.NewServer()
 			server.Run()
 		},
+	}
+
+	prepareChildCommand(rootCmd)
+
+	return rootCmd
+}
+
+var childCommand = []*cobra.Command{
+	{
+		Use:   "version",
+		Short: "Print version information",
+		Long:  `All software has versions.`,
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("v0.1")
+		},
+	},
+}
+
+func prepareChildCommand(rootCmd *cobra.Command) {
+	for _, command := range childCommand {
+		rootCmd.AddCommand(command)
 	}
 }
