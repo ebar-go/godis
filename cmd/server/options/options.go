@@ -1,7 +1,11 @@
 package options
 
-type Options struct{}
+type Options struct {
+	Address string
+}
 
-func NewOptions() *Options {
-	return &Options{}
+func NewServerRunOptions() *Options {
+	return &Options{
+		Address: "",
+	}
 }
