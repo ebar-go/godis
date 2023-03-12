@@ -1,6 +1,8 @@
 package client
 
 import (
+	"fmt"
+	"github.com/ebar-go/ego/utils/runtime"
 	"github.com/ebar-go/znet/client"
 	"net"
 	"strconv"
@@ -31,5 +33,15 @@ func (cli *Client) Run(stopCh <-chan struct{}) error {
 	}
 
 	cli.conn = conn
+
+	runtime.WaitClose(stopCh, cli.onClose)
 	return nil
+}
+
+func (cli *Client) onClose() {
+	fmt.Printf("connection closed")
+	cli.conn.Close()
+}
+func (cli *Client) onSuccess() {
+	fmt.Printf(`Successfully connected to %s\n`, cli.cfg.Address())
 }
