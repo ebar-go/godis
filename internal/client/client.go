@@ -34,6 +34,8 @@ func (cli *Client) Run(stopCh <-chan struct{}) error {
 
 	cli.conn = conn
 
+	cli.onSuccess()
+
 	runtime.WaitClose(stopCh, cli.onClose)
 	return nil
 }
@@ -43,5 +45,7 @@ func (cli *Client) onClose() {
 	cli.conn.Close()
 }
 func (cli *Client) onSuccess() {
-	fmt.Printf(`Successfully connected to %s\n`, cli.cfg.Address())
+	fmt.Printf("Successfully connected to %s\n", cli.cfg.Address())
+	fmt.Printf("--------------------------------\n")
+	fmt.Printf(">")
 }
