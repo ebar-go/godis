@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/ebar-go/ego/utils/runtime/signal"
 	"github.com/ebar-go/godis/cmd/client/options"
+	"github.com/ebar-go/godis/internal/client"
 	"github.com/spf13/cobra"
-	"log"
 	"os"
 )
 
@@ -23,7 +24,7 @@ func NewCommand() *cobra.Command {
 		Short: "godis-cli is a client for godis",
 		Long:  `interactive command`,
 		Run: func(cmd *cobra.Command, args []string) {
-			log.Println(opts.Host)
+			Run(opts)
 		},
 	}
 
@@ -31,6 +32,14 @@ func NewCommand() *cobra.Command {
 	parseFlag(rootCmd, opts)
 
 	return rootCmd
+}
+
+func Run(opts *options.Options) {
+	cfg := new(client.Config)
+	opts.ApplyTo(cfg)
+
+	cli := client.New(cfg)
+	cli.Run(signal.SetupSignalHandler())
 }
 
 var childCommand = []*cobra.Command{
