@@ -1,11 +1,15 @@
 package client
 
 import (
+	"bufio"
 	"fmt"
 	"github.com/ebar-go/ego/utils/runtime"
 	"github.com/ebar-go/znet/client"
+	"io"
 	"net"
+	"os"
 	"strconv"
+	"strings"
 )
 
 type Config struct {
@@ -36,8 +40,36 @@ func (cli *Client) Run(stopCh <-chan struct{}) error {
 
 	cli.onSuccess()
 
+	go cli.handle(stopCh)
+
 	runtime.WaitClose(stopCh, cli.onClose)
 	return nil
+}
+
+func (cli *Client) handle(stopCh <-chan struct{}) {
+	inputReader := bufio.NewReader(os.Stdin)
+	for {
+		select {
+		case <-stopCh:
+			return
+		default:
+			fmt.Printf("\n>")
+			input, err := inputReader.ReadString('\n')
+			if err != nil {
+				if err == io.EOF {
+					os.Exit(-1)
+				}
+				fmt.Printf("Error reading:%v", err)
+				os.Exit(-1)
+			}
+
+			args := strings.Split(input, " ")
+			for i, arg := range args {
+				fmt.Println("args", i, arg)
+			}
+
+		}
+	}
 }
 
 func (cli *Client) onClose() {
@@ -46,6 +78,5 @@ func (cli *Client) onClose() {
 }
 func (cli *Client) onSuccess() {
 	fmt.Printf("Successfully connected to %s\n", cli.cfg.Address())
-	fmt.Printf("--------------------------------\n")
-	fmt.Printf(">")
+	fmt.Printf("--------------------------------")
 }

@@ -39,7 +39,9 @@ func Run(opts *options.Options) {
 	opts.ApplyTo(cfg)
 
 	cli := client.New(cfg)
-	cli.Run(signal.SetupSignalHandler())
+	if err := cli.Run(signal.SetupSignalHandler()); err != nil {
+		fmt.Printf("error:%v\n", err)
+	}
 }
 
 var childCommand = []*cobra.Command{
