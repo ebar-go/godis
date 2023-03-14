@@ -64,9 +64,12 @@ func (cli *Client) handle(stopCh <-chan struct{}) {
 			}
 
 			args := strings.Split(input, " ")
-			for i, arg := range args {
-				fmt.Println("args", i, arg)
+			cmd, err := Parse(args)
+			if err != nil {
+				fmt.Printf("%v\n", err)
+				continue
 			}
+			fmt.Printf("receive command:%v", cmd)
 
 		}
 	}
