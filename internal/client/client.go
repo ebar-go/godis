@@ -71,6 +71,10 @@ func (cli *Client) handle(stopCh <-chan struct{}) {
 			}
 			fmt.Printf("receive command:%v", cmd)
 
+			if err := cmd.Validate(); err != nil {
+				fmt.Printf("%v\n", err)
+			}
+
 		}
 	}
 }

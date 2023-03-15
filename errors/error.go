@@ -14,3 +14,4 @@ func New(msg string) error {
 
 var Nil = New("object is nil")
 var InvalidType = New("object is invalid type")
+var InvalidParams = New("invalid params")
