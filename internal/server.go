@@ -5,6 +5,7 @@ import (
 	"github.com/ebar-go/godis/constant"
 	"github.com/ebar-go/godis/internal/store"
 	"github.com/ebar-go/znet"
+	"log"
 )
 
 type Server struct {
@@ -26,6 +27,7 @@ func (s *Server) Run() error {
 
 	})
 	instance.Router().Route(constant.ActionCommand, func(ctx *znet.Context) (any, error) {
+		log.Println("request:", string(ctx.Packet().Body))
 		return Response{Code: 0}, nil
 	})
 	instance.ListenTCP(":3306")
