@@ -13,8 +13,9 @@ import (
 )
 
 type Config struct {
-	Host string `json:"host"`
-	Port int    `json:"port"`
+	Debug bool   `json:"debug"`
+	Host  string `json:"host"`
+	Port  int    `json:"port"`
 }
 
 func (c *Config) Address() string {
@@ -69,11 +70,30 @@ func (cli *Client) handle(stopCh <-chan struct{}) {
 				fmt.Printf("%v\n", err)
 				continue
 			}
-			fmt.Printf("receive command:%v", cmd)
+
+			if cli.cfg.Debug {
+				fmt.Printf("receive command:%v", cmd)
+			}
 
 			if err := cmd.Validate(); err != nil {
 				fmt.Printf("%v\n", err)
+				continue
 			}
+
+			_, err = cli.conn.Write(cmd.Serialize())
+			if err != nil {
+				fmt.Printf("send command:%v\n", err)
+				continue
+			}
+
+			result := make([]byte, 4096)
+			n, err := cli.conn.Read(result)
+			if err != nil {
+				fmt.Printf("read result:%v\n", err)
+				continue
+			}
+
+			fmt.Printf("%v", string(result[:n]))
 
 		}
 	}

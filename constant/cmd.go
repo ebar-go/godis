@@ -37,3 +37,7 @@ const (
 	CommandZCard         = "zcard"
 	CommandZRangeByScore = "zrangebyscore"
 )
+
+const (
+	ActionCommand = 1
+)

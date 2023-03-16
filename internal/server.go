@@ -2,6 +2,7 @@ package internal
 
 import (
 	"github.com/ebar-go/ego/utils/runtime/signal"
+	"github.com/ebar-go/godis/constant"
 	"github.com/ebar-go/godis/internal/store"
 	"github.com/ebar-go/znet"
 )
@@ -16,8 +17,17 @@ func NewServer() *Server {
 	}
 }
 
+type Response struct {
+	Code int `json:"code"`
+}
+
 func (s *Server) Run() error {
-	instance := znet.New()
+	instance := znet.New(func(options *znet.Options) {
+
+	})
+	instance.Router().Route(constant.ActionCommand, func(ctx *znet.Context) (any, error) {
+		return Response{Code: 0}, nil
+	})
 	instance.ListenTCP(":3306")
 	return instance.Run(signal.SetupSignalHandler())
 }
